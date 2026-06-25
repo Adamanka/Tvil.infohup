@@ -6,7 +6,7 @@
     <title>Инфо-Хаб Стримера • Фиолетовый</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700;14..32,800&family=MedievalSharp&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* ----- ОСНОВНЫЕ ЦВЕТА (Фиолетово-чёрный) ----- */
@@ -49,16 +49,107 @@
             width: 100%;
         }
 
-        /* ----- ШАПКА ----- */
+        /* ----- ШАПКА С АВАТАРКОЙ ----- */
         .hub-header {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
+            justify-content: center;
             margin-bottom: 2.5rem;
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 1.5rem;
+        }
+
+        .avatar-wrapper {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .avatar-wrapper img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent);
+            box-shadow: 0 0 40px rgba(139, 92, 246, 0.3), inset 0 0 40px rgba(139, 92, 246, 0.1);
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+
+        .avatar-wrapper img:hover {
+            box-shadow: 0 0 60px rgba(139, 92, 246, 0.5);
+            transform: scale(1.02);
+        }
+
+        .avatar-wrapper .glow-ring {
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            width: 132px;
+            height: 132px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            background: conic-gradient(from 0deg, var(--accent), var(--accent-light), var(--accent)) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.6;
+            animation: spinGlow 4s linear infinite;
+        }
+
+        @keyframes spinGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .streamer-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .streamer-nick {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #d4caf0;
+            text-shadow: 0 0 40px rgba(139, 92, 246, 0.25);
+            letter-spacing: -0.5px;
+        }
+
+        /* ----- D&D СТИЛЬ ДЛЯ ПОДПИСИ ----- */
+        .streamer-sub {
+            font-family: 'MedievalSharp', cursive;
+            font-size: 1.2rem;
+            color: #d4b8a0;
+            text-shadow: 
+                0 0 10px rgba(180, 120, 80, 0.2),
+                0 2px 4px rgba(0, 0, 0, 0.8);
+            letter-spacing: 1.5px;
+            background: linear-gradient(180deg, #d4b8a0 0%, #b89470 50%, #8a7050 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            padding: 0.2rem 1.2rem;
+        }
+
+        .streamer-sub::before,
+        .streamer-sub::after {
+            content: "✦";
+            font-size: 0.7rem;
+            color: #b89470;
+            -webkit-text-fill-color: initial;
+            position: relative;
+            margin: 0 6px;
+            opacity: 0.6;
+        }
+
+        .streamer-sub .dnd-icon {
+            -webkit-text-fill-color: initial;
+            color: #b89470;
+            font-size: 0.8rem;
+            margin: 0 4px;
+            opacity: 0.5;
         }
 
         /* ----- СЕТКА ----- */
@@ -245,35 +336,6 @@
             filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.4));
         }
 
-        /* ----- НИК СТРИМЕРА (фиолетовый) ----- */
-        .streamer-header {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .streamer-nick {
-            font-size: 2rem;
-            font-weight: 800;
-            color: #d4caf0;
-            text-shadow: 0 0 40px rgba(139, 92, 246, 0.2);
-            letter-spacing: -0.5px;
-        }
-
-        .streamer-sub {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            font-weight: 400;
-            letter-spacing: 0.3px;
-        }
-
-        .streamer-sub i {
-            color: var(--accent-light);
-            margin-right: 4px;
-            font-size: 0.7rem;
-            opacity: 0.6;
-        }
-
         /* ----- ДОП БЛОК (донат-способы) ----- */
         .donate-methods {
             margin-top: 1rem;
@@ -296,9 +358,6 @@
             body {
                 padding: 1rem;
             }
-            .hub-header h1 {
-                font-size: 1.6rem;
-            }
             .profile-grid {
                 grid-template-columns: 1fr;
             }
@@ -306,10 +365,20 @@
                 grid-template-columns: 1fr;
             }
             .streamer-nick {
-                font-size: 1.5rem;
+                font-size: 1.6rem;
             }
             .streamer-sub {
-                font-size: 0.75rem;
+                font-size: 1rem;
+            }
+            .avatar-wrapper img {
+                width: 90px;
+                height: 90px;
+            }
+            .avatar-wrapper .glow-ring {
+                width: 102px;
+                height: 102px;
+                top: -6px;
+                left: -6px;
             }
         }
 
@@ -332,12 +401,20 @@
 <body>
 <div class="container">
 
-    <!-- ШАПКА -->
+    <!-- ШАПКА С АВАТАРКОЙ -->
     <header class="hub-header">
+        <!-- АВАТАРКА - ЗАМЕНИ src НА СВОЙ ПУТЬ К PNG -->
+        <div class="avatar-wrapper">
+            <img src="avatar.png" alt="Tviltofer" id="avatar">
+            <div class="glow-ring"></div>
+        </div>
+
         <div class="streamer-header">
             <div class="streamer-nick">Tviltofer</div>
             <div class="streamer-sub">
-                <i class="fas fa-quote-left"></i> Я — Тви́лтофер Rwizardser
+                <i class="fas fa-dragon dnd-icon"></i>
+                Я — Тви́лтофер Rwizardser
+                <i class="fas fa-hat-wizard dnd-icon"></i>
             </div>
         </div>
     </header>
