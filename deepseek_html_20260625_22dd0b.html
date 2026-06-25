@@ -22,10 +22,6 @@
             --accent: #8b5cf6;
             --accent-light: #a78bfa;
             --accent-glow: rgba(139, 92, 246, 0.25);
-            --gold: #d4a857;
-            --gold-bg: #2a2218;
-            --warning-bg: #1f1225;
-            --warning-border: #7c2d6b;
         }
 
         * {
@@ -63,35 +59,6 @@
             margin-bottom: 2.5rem;
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 1.5rem;
-        }
-
-        .hub-header h1 {
-            font-size: 2.2rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #a78bfa, #7c3aed, #6d28d9);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 40px rgba(139, 92, 246, 0.3);
-        }
-
-        .hub-header .status {
-            background: #1a1329;
-            padding: 0.5rem 1.2rem;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            border-left: 4px solid #4caf50;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--text-secondary);
-        }
-
-        .hub-header .status i {
-            color: #4caf50;
-            font-size: 0.7rem;
         }
 
         /* ----- СЕТКА ----- */
@@ -139,7 +106,7 @@
             filter: drop-shadow(0 0 6px rgba(139, 92, 246, 0.3));
         }
 
-        /* ----- ДОСЬЕ ----- */
+        /* ----- ДОСЬЕ (ПУСТОЕ) ----- */
         .profile-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -165,9 +132,12 @@
             color: #d4caf0;
         }
 
-        .value.highlight {
-            color: var(--accent-light);
-            text-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
+        .profile-item .value.empty {
+            color: var(--text-muted);
+            opacity: 0.3;
+            font-style: italic;
+            font-weight: 400;
+            font-size: 0.9rem;
         }
 
         /* ----- ОБОРУДОВАНИЕ ----- */
@@ -201,70 +171,40 @@
             width: 18px;
         }
 
-        /* ----- ТОП ДОНАТОВ (фиолетовая тема) ----- */
-        .donation-list {
+        /* ----- ТОП ДОНАТОВ (ПУСТОЙ БЛОК) ----- */
+        .donation-empty {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .donation-item {
-            display: flex;
-            justify-content: space-between;
             align-items: center;
-            background: #0f0b1c;
-            padding: 0.5rem 1rem;
-            border-radius: 12px;
-            border-left: 3px solid var(--accent);
-            transition: background 0.2s;
+            justify-content: center;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            min-height: 200px;
         }
 
-        .donation-item:hover {
-            background: #19132b;
+        .donation-empty i {
+            font-size: 3rem;
+            color: var(--text-muted);
+            opacity: 0.4;
+            margin-bottom: 1rem;
         }
 
-        .donation-item .place {
-            font-weight: 700;
-            color: var(--accent-light);
-            min-width: 28px;
+        .donation-empty .empty-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.3rem;
         }
 
-        .donation-item .name {
-            flex: 1;
-            margin-left: 0.5rem;
-            font-weight: 500;
-            color: #cbbbe5;
+        .donation-empty .empty-sub {
+            font-size: 0.85rem;
+            color: var(--text-muted);
         }
 
-        .donation-item .amount {
-            font-weight: 700;
-            color: var(--gold);
-            background: var(--gold-bg);
-            padding: 0.15rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-        }
-
-        .donation-item .amount i {
-            color: var(--gold);
-            margin-right: 4px;
-            font-size: 0.7rem;
-        }
-
-        /* Первое место — особое свечение */
-        .donation-item:first-child {
-            border-left-color: var(--gold);
-            background: #1e1822;
-            box-shadow: 0 0 20px rgba(212, 168, 87, 0.06);
-        }
-
-        .donation-item:first-child .place {
-            color: var(--gold);
-        }
-
-        .donation-item:first-child .amount {
-            background: #2f2418;
-            color: #f5d78a;
+        .donation-empty .empty-sub i {
+            font-size: 0.8rem;
+            opacity: 0.6;
+            margin: 0 0.2rem;
         }
 
         /* ----- СОЦИАЛЬНЫЕ СЕТИ (фиолетовые ссылки) ----- */
@@ -305,50 +245,33 @@
             filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.4));
         }
 
-        /* ----- ПРЕДУПРЕЖДЕНИЕ (фиолетовая тема) ----- */
-        .warning-banner {
-            background: var(--warning-bg);
-            border: 1px solid var(--warning-border);
-            border-radius: 16px;
-            padding: 1rem 1.8rem;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-            color: #d4b8d4;
-            box-shadow: 0 0 30px rgba(124, 45, 107, 0.1);
-        }
-
-        .warning-banner i {
-            font-size: 1.6rem;
-            color: #c084c4;
-            filter: drop-shadow(0 0 10px rgba(192, 132, 196, 0.2));
-        }
-
-        .warning-banner span {
-            font-weight: 500;
-        }
-
-        .warning-banner strong {
-            color: #e8b4e8;
-        }
-
         /* ----- НИК СТРИМЕРА (фиолетовый) ----- */
-        .streamer-nick {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: #d4caf0;
+        .streamer-header {
             display: flex;
-            align-items: center;
-            gap: 10px;
-            text-shadow: 0 0 30px rgba(139, 92, 246, 0.15);
+            flex-direction: column;
+            gap: 2px;
         }
 
-        .streamer-nick small {
+        .streamer-nick {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #d4caf0;
+            text-shadow: 0 0 40px rgba(139, 92, 246, 0.2);
+            letter-spacing: -0.5px;
+        }
+
+        .streamer-sub {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
             font-weight: 400;
-            font-size: 0.8rem;
-            color: var(--text-muted);
+            letter-spacing: 0.3px;
+        }
+
+        .streamer-sub i {
+            color: var(--accent-light);
+            margin-right: 4px;
+            font-size: 0.7rem;
+            opacity: 0.6;
         }
 
         /* ----- ДОП БЛОК (донат-способы) ----- */
@@ -382,9 +305,11 @@
             .grid {
                 grid-template-columns: 1fr;
             }
-            .donation-item {
-                flex-wrap: wrap;
-                gap: 0.3rem;
+            .streamer-nick {
+                font-size: 1.5rem;
+            }
+            .streamer-sub {
+                font-size: 0.75rem;
             }
         }
 
@@ -409,38 +334,45 @@
 
     <!-- ШАПКА -->
     <header class="hub-header">
-        <div>
-            <div class="streamer-nick">
-                DaymonMontage <small>• инфо-хаб</small>
+        <div class="streamer-header">
+            <div class="streamer-nick">Tviltofer</div>
+            <div class="streamer-sub">
+                <i class="fas fa-quote-left"></i> Я — Тви́лтофер Rwizardser
             </div>
-            <div style="font-size:0.9rem; color:#6b5b8a; margin-top:4px;">
-                <i class="fas fa-map-pin" style="color:#7c3aed;"></i> Витебская обл, Беларусь
-            </div>
-        </div>
-        <div class="status">
-            <i class="fas fa-circle"></i> Offline
         </div>
     </header>
-
-    <!-- БАННЕР ПРЕДУПРЕЖДЕНИЯ -->
-    <div class="warning-banner">
-        <i class="fas fa-ear-deaf"></i>
-        <span><strong>ВНИМАНИЕ:</strong> Просьба не отправлять громкие звуки, у стримера есть слуховая травма.</span>
-    </div>
 
     <!-- СЕТКА КАРТОЧЕК -->
     <div class="grid">
 
-        <!-- 1. ДОСЬЕ -->
+        <!-- 1. ДОСЬЕ (ПУСТОЕ) -->
         <div class="card">
             <div class="card-title"><i class="fas fa-id-card"></i> Досье</div>
             <div class="profile-grid">
-                <div class="profile-item"><span class="label">Имя</span><span class="value">Илья Хоменков</span></div>
-                <div class="profile-item"><span class="label">Возраст</span><span class="value">24 года (29.04.2001)</span></div>
-                <div class="profile-item"><span class="label">Начало</span><span class="value">20 июня 2016</span></div>
-                <div class="profile-item"><span class="label">Служба</span><span class="value">11-я ОМБр, Разведка</span></div>
-                <div class="profile-item"><span class="label">Характер</span><span class="value highlight">я ебал</span></div>
-                <div class="profile-item"><span class="label">Образ жизни</span><span class="value highlight">тоже</span></div>
+                <div class="profile-item">
+                    <span class="label">Имя</span>
+                    <span class="value empty">—</span>
+                </div>
+                <div class="profile-item">
+                    <span class="label">Возраст</span>
+                    <span class="value empty">—</span>
+                </div>
+                <div class="profile-item">
+                    <span class="label">Начало</span>
+                    <span class="value empty">—</span>
+                </div>
+                <div class="profile-item">
+                    <span class="label">Служба</span>
+                    <span class="value empty">—</span>
+                </div>
+                <div class="profile-item">
+                    <span class="label">Характер</span>
+                    <span class="value empty">—</span>
+                </div>
+                <div class="profile-item">
+                    <span class="label">Образ жизни</span>
+                    <span class="value empty">—</span>
+                </div>
             </div>
         </div>
 
@@ -457,18 +389,15 @@
             </div>
         </div>
 
-        <!-- 3. ТОП ДОНАТОВ -->
+        <!-- 3. ТОП ДОНАТОВ (ПУСТОЙ) -->
         <div class="card">
             <div class="card-title"><i class="fas fa-trophy"></i> Легенды донатов</div>
-            <div class="donation-list">
-                <div class="donation-item"><span class="place">#1</span><span class="name">Пиво Махно (gamenew_joy)</span><span class="amount"><i class="fas fa-ruble-sign"></i> 72 752</span></div>
-                <div class="donation-item"><span class="place">#2</span><span class="name">DeStarInd</span><span class="amount"><i class="fas fa-ruble-sign"></i> 50 000</span></div>
-                <div class="donation-item"><span class="place">#3</span><span class="name">HellDream</span><span class="amount"><i class="fas fa-ruble-sign"></i> 50 000</span></div>
-                <div class="donation-item"><span class="place">#4</span><span class="name">DeStarInd</span><span class="amount"><i class="fas fa-ruble-sign"></i> 30 000</span></div>
-                <div class="donation-item"><span class="place">#5</span><span class="name">Пиво Махно (gamenew_joy)</span><span class="amount"><i class="fas fa-ruble-sign"></i> 25 000</span></div>
-                <div class="donation-item"><span class="place">#6</span><span class="name">HellDream</span><span class="amount"><i class="fas fa-ruble-sign"></i> 25 000</span></div>
-                <div class="donation-item"><span class="place">#7</span><span class="name">TheSoul</span><span class="amount"><i class="fas fa-ruble-sign"></i> 20 000</span></div>
-                <div class="donation-item"><span class="place">#8</span><span class="name">HellDream</span><span class="amount"><i class="fas fa-ruble-sign"></i> 20 000</span></div>
+            <div class="donation-empty">
+                <i class="fas fa-inbox"></i>
+                <div class="empty-title">Скоро здесь появятся топ-донатеры</div>
+                <div class="empty-sub">
+                    <i class="fas fa-arrow-right"></i> Следи за стримом <i class="fas fa-arrow-left"></i>
+                </div>
             </div>
         </div>
     </div>
