@@ -1,418 +1,98 @@
-/* ----- ОСНОВНЫЕ ЦВЕТА (Фиолетово-чёрный + D&D) ----- */
 :root {
-    --bg-primary: #0a0812;
-    --bg-card: #110d1f;
-    --bg-card-hover: #19132b;
-    --border-color: #2d1f4a;
-    --border-glow: #7c3aed;
-    --text-primary: #e8e0f5;
-    --text-secondary: #a894d0;
-    --text-muted: #6b5b8a;
+    --bg-primary: #0f0c1d;
+    --bg-card: #161229;
     --accent: #8b5cf6;
-    --accent-light: #a78bfa;
-    --gold-start: #f6d365;
-    --gold-end: #fda085;
-    --parchment: #d4c8a0;
-    --parchment-dark: #b8a880;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    --gold: linear-gradient(180deg, #f9d976 0%, #f39c12 100%);
+    --text-main: #e8e0f5;
+    --text-dim: #a894d0;
 }
 
 body {
     background: var(--bg-primary);
-    color: var(--text-primary);
-    font-family: 'Inter', sans-serif;
-    padding: 2rem 1.5rem;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
     background-image: 
-        radial-gradient(ellipse at 20% 50%, #1a0f2e 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 20%, #140a24 0%, transparent 50%),
-        var(--bg-primary);
+        radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(76, 29, 149, 0.15) 0%, transparent 40%);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    margin: 0; padding: 20px;
+    display: flex; justify-content: center;
 }
 
-.container {
-    max-width: 1300px;
-    width: 100%;
-}
+.container { max-width: 1100px; width: 100%; }
 
-/* ----- ШАПКА С АВАТАРКОЙ ----- */
-.hub-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 2.5rem;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 1.5rem;
-}
-
-.avatar-wrapper {
-    position: relative;
-    margin-bottom: 1rem;
-}
-
+/* Header */
+.hub-header { text-align: center; margin-bottom: 40px; }
+.avatar-wrapper { position: relative; display: inline-block; }
 .avatar-wrapper img {
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid var(--accent);
-    box-shadow: 0 0 40px rgba(139, 92, 246, 0.3);
-    transition: box-shadow 0.3s, transform 0.3s;
+    width: 150px; height: 150px; border-radius: 50%;
+    border: 4px solid var(--accent);
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.4);
 }
 
-.avatar-wrapper img:hover {
-    box-shadow: 0 0 60px rgba(139, 92, 246, 0.5);
-    transform: scale(1.02);
+.status-badge {
+    position: absolute; bottom: 10px; right: 10px;
+    background: #10b981; color: white; padding: 4px 10px;
+    border-radius: 20px; font-size: 10px; font-weight: 800;
 }
 
-.streamer-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-}
-
-.streamer-nick {
-    font-size: 2.2rem;
-    font-weight: 800;
-    color: #d4caf0;
-    text-shadow: 0 0 40px rgba(139, 92, 246, 0.25);
-    letter-spacing: -0.5px;
-}
-
-/* ----- ЗОЛОТОЙ ГРАДИЕНТ ДЛЯ ПОДПИСИ ----- */
-.streamer-sub {
-    font-family: 'MedievalSharp', cursive;
-    font-size: 1.3rem;
-    font-weight: 600;
-    background: linear-gradient(180deg, #f9d976 0%, #f39c12 40%, #e67e22 70%, #d35400 100%);
+.streamer-nick { font-size: 2.5rem; font-weight: 800; margin-top: 15px; }
+.streamer-sub { 
+    font-family: 'MedievalSharp', cursive; 
+    background: var(--gold);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: 
-        0 0 30px rgba(243, 156, 18, 0.15),
-        0 2px 4px rgba(0, 0, 0, 0.6);
-    letter-spacing: 1px;
-    position: relative;
-    padding: 0.2rem 0.5rem;
+    font-size: 1.5rem;
 }
 
-.streamer-sub .dnd-icon {
-    -webkit-text-fill-color: initial;
-    color: #f39c12;
-    font-size: 0.8rem;
-    margin: 0 4px;
-    opacity: 0.7;
-    text-shadow: 0 0 20px rgba(243, 156, 18, 0.2);
-}
-
-/* ----- СЕТКА ----- */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-    gap: 1.8rem;
-    margin-bottom: 2.5rem;
-}
-
-/* ----- КАРТОЧКИ (исправленные) ----- */
+/* Cards */
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
 .card {
-    position: relative;
     background: var(--bg-card);
-    border-radius: 24px;
-    padding: 1.6rem 1.8rem;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(139, 92, 246, 0.08);
-    transition: border-color 0.3s, box-shadow 0.3s, transform 0.4s cubic-bezier(.25, .46, .45, .94);
-    backdrop-filter: blur(2px);
-    will-change: transform;
-    overflow: hidden;
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: 20px; padding: 25px;
+    transition: 0.3s; position: relative; overflow: hidden;
 }
-
-/* 3D карточки с tilt эффектом */
-.tilt-card {
-    transform-style: preserve-3d;
-}
-
-.tilt-card:hover {
-    border-color: var(--accent);
-    box-shadow: 0 20px 60px rgba(139, 92, 246, 0.15), 
-                0 8px 32px rgba(0, 0, 0, 0.5),
-                inset 0 1px 0 rgba(139, 92, 246, 0.15);
-    transform: translateY(-6px);
-}
-
-/* ----- ВАЖНО: УБИРАЕМ translateZ у всех внутренних элементов ----- */
-.card-title,
-.profile-grid,
-.spec-list,
-.donation-empty,
-.social-grid,
-.donate-methods,
-.profile-item,
-.spec-row,
-.social-link {
-    transform: none !important;
-}
+.card:hover { border-color: var(--accent); box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
 
 .card-title {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--text-muted);
-    margin-bottom: 1.2rem;
-    border-bottom: 1px solid #1f1735;
-    padding-bottom: 0.7rem;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    color: var(--text-dim); text-transform: uppercase;
+    font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 20px;
+    display: flex; align-items: center; gap: 10px;
 }
 
-.card-title i {
-    color: var(--accent-light);
-    font-size: 1rem;
-    width: 20px;
-    filter: drop-shadow(0 0 6px rgba(139, 92, 246, 0.3));
+/* RPG Stats */
+.attribute {
+    background: rgba(139, 92, 246, 0.1);
+    padding: 10px; border-radius: 10px; border-left: 3px solid var(--accent);
+    margin-bottom: 10px;
 }
+.label { font-size: 0.7rem; color: var(--accent); display: block; }
+.value { font-family: 'MedievalSharp', cursive; font-size: 1.1rem; }
 
-/* ================================================ */
-/* ----- ДОСЬЕ В СТИЛЕ D&D (ЛИСТ ПЕРСОНАЖА) ----- */
-/* ================================================ */
-.profile-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem 2rem;
-}
-
-.profile-item {
-    display: flex;
-    flex-direction: column;
-    border-bottom: 1px dashed #2d1f4a;
-    padding-bottom: 0.4rem;
-}
-
-.profile-item .label {
-    font-family: 'MedievalSharp', cursive;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    color: var(--gold-start);
-    letter-spacing: 1.5px;
-    text-shadow: 0 0 20px rgba(243, 156, 18, 0.1);
-}
-
-.profile-item .label i {
-    margin-right: 4px;
-    font-size: 0.7rem;
-}
-
-.profile-item .value {
-    font-family: 'MedievalSharp', cursive;
-    font-weight: 600;
-    font-size: 1.1rem;
-    margin-top: 2px;
-    color: var(--parchment);
-    text-shadow: 0 0 20px rgba(212, 200, 160, 0.05);
-    letter-spacing: 0.5px;
-}
-
-.profile-item .value.empty {
-    color: var(--text-muted);
-    opacity: 0.3;
-    font-style: italic;
-    font-weight: 400;
-    font-size: 1rem;
-}
-
-.profile-item.attribute {
-    border-bottom: none;
-    background: rgba(139, 92, 246, 0.05);
-    border-radius: 8px;
-    padding: 0.3rem 0.6rem;
-    border-left: 2px solid var(--accent);
-}
-
-.profile-item.attribute .label {
-    color: var(--accent-light);
-    font-size: 0.65rem;
-}
-
-.profile-item.attribute .value {
-    font-size: 1rem;
-}
-
-.dnd-divider {
-    margin-top: 0.8rem;
-    text-align: center;
-    font-family: 'MedievalSharp', cursive;
-    font-size: 0.6rem;
-    color: var(--text-muted);
-    opacity: 0.3;
-    letter-spacing: 3px;
-}
-
-/* ----- ОБОРУДОВАНИЕ ----- */
-.spec-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.9rem;
-}
-
+/* Setup List */
 .spec-row {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px dashed #1f1735;
-    padding-bottom: 0.5rem;
-    font-size: 0.95rem;
+    display: flex; justify-content: space-between;
+    padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
 }
+.highlight { color: #f39c12; font-weight: bold; }
 
-.spec-row .spec-name {
-    color: var(--text-secondary);
-}
-
-.spec-row .spec-value {
-    font-weight: 600;
-    color: #e4dbf5;
-    text-align: right;
-}
-
-.spec-value i {
-    margin-right: 6px;
-    color: var(--accent-light);
-    width: 18px;
-}
-
-/* ----- ТОП ДОНАТОВ (ПУСТОЙ БЛОК) ----- */
-.donation-empty {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2.5rem 1rem;
-    text-align: center;
-    min-height: 200px;
-}
-
-.donation-empty i {
-    font-size: 3rem;
-    color: var(--text-muted);
-    opacity: 0.4;
-    margin-bottom: 1rem;
-}
-
-.donation-empty .empty-title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-secondary);
-    margin-bottom: 0.3rem;
-}
-
-.donation-empty .empty-sub {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-}
-
-.donation-empty .empty-sub i {
-    font-size: 0.8rem;
-    opacity: 0.6;
-    margin: 0 0.2rem;
-}
-
-/* ----- СОЦИАЛЬНЫЕ СЕТИ ----- */
-.social-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem 1.2rem;
-    margin-top: 0.2rem;
-}
-
+/* Socials */
+.social-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
 .social-link {
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-size: 0.95rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: 0.25s;
-    padding: 0.2rem 0.6rem;
-    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    padding: 10px 15px; border-radius: 12px;
+    text-decoration: none; color: var(--text-main);
+    transition: 0.2s; display: flex; align-items: center; gap: 8px;
+}
+.social-link:hover { background: var(--accent); transform: translateY(-3px); }
+
+.donate-btn {
+    display: block; width: 100%; text-align: center;
+    background: var(--gold); color: #000;
+    padding: 15px; border-radius: 12px; margin-top: 20px;
+    text-decoration: none; font-weight: 800;
 }
 
-.social-link:hover {
-    color: #ffffff;
-    background: #1f1735;
-    transform: scale(1.03);
-    box-shadow: 0 0 20px rgba(139, 92, 246, 0.1);
-}
-
-.social-link i {
-    font-size: 1.2rem;
-    width: 24px;
-    color: var(--accent-light);
-    filter: drop-shadow(0 0 4px rgba(139, 92, 246, 0.15));
-}
-
-.social-link:hover i {
-    filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.4));
-}
-
-/* ----- ДОП БЛОК (донат-способы) ----- */
-.donate-methods {
-    margin-top: 1rem;
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    border-top: 1px solid #1f1735;
-    padding-top: 0.8rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.2rem;
-}
-
-.donate-methods i {
-    color: var(--accent-light);
-    margin-right: 6px;
-}
-
-/* ----- АДАПТИВНОСТЬ ----- */
-@media (max-width: 700px) {
-    body {
-        padding: 1rem;
-    }
-    .profile-grid {
-        grid-template-columns: 1fr;
-        gap: 0.6rem;
-    }
-    .grid {
-        grid-template-columns: 1fr;
-    }
-    .streamer-nick {
-        font-size: 1.6rem;
-    }
-    .streamer-sub {
-        font-size: 1rem;
-    }
-    .avatar-wrapper img {
-        width: 130px;
-        height: 130px;
-    }
-}
-
-/* Футер */
-.footer {
-    margin-top: 2.5rem;
-    font-size: 0.7rem;
-    color: #3a2d52;
-    text-align: center;
-    border-top: 1px solid #1a112a;
-    padding-top: 1.5rem;
-}
-
-.footer i {
-    color: var(--accent);
-    margin-right: 4px;
+@media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; }
 }
