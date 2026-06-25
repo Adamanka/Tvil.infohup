@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Инфо-Хаб Стримера • D&D Стиль</title>
+    <title>Инфо-Хаб Tviltofer • Wizard Edition</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700;14..32,800&family=MedievalSharp&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=MedievalSharp&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js" defer></script>
     <link rel="stylesheet" href="css/style.css">
@@ -18,93 +18,98 @@
         <header class="hub-header">
             <div class="avatar-wrapper">
                 <img src="avatar.png" alt="Tviltofer" id="avatar">
+                <div class="status-badge">ONLINE</div>
             </div>
             <div class="streamer-header">
                 <div class="streamer-nick">Tviltofer</div>
                 <div class="streamer-sub">
                     <i class="fas fa-dragon dnd-icon"></i>
-                    Я – Тви́ттофер Rwizardser
+                    Твиттофер Rwizardser
                     <i class="fas fa-hat-wizard dnd-icon"></i>
                 </div>
             </div>
         </header>
 
         <div class="grid">
-
-            <div class="card tilt-card" data-tilt data-tilt-max="5" data-tilt-speed="600" data-tilt-perspective="1200" data-tilt-glare="true" data-tilt-glare-max="0.15" data-tilt-scale="1.03">
+            <!-- КАРТОЧКА: ЛИСТ ПЕРСОНАЖА -->
+            <div class="card tilt-card" data-tilt>
                 <div class="card-title">
                     <i class="fas fa-scroll"></i> 
                     Лист персонажа
-                    <span style="margin-left: auto; font-family: 'MedievalSharp', cursive; font-size: 0.8rem; color: var(--gold-start); opacity: 0.5;">⚔️</span>
+                    <span class="level-badge">LVL 26</span>
                 </div>
                 <div class="profile-grid">
                     <div class="profile-item attribute">
-                        <span class="label"><i class="fas fa-feather-alt"></i>Имя</span>
-                        <span class="value empty">—</span>
+                        <span class="label">Имя</span>
+                        <span class="value">Твиттофер</span>
                     </div>
                     <div class="profile-item attribute">
-                        <span class="label"><i class="fas fa-users"></i>Раса</span>
-                        <span class="value empty">—</span>
+                        <span class="label">Раса</span>
+                        <span class="value">Маг-Визард</span>
                     </div>
                     <div class="profile-item attribute">
-                        <span class="label"><i class="fas fa-venus-mars"></i>Пол</span>
-                        <span class="value empty">—</span>
+                        <span class="label">Специализация</span>
+                        <span class="value">VR & Игры</span>
                     </div>
                     <div class="profile-item attribute">
-                        <span class="label"><i class="fas fa-hourglass-half"></i>Возраст</span>
-                        <span class="value empty">—</span>
+                        <span class="label">Мировоззрение</span>
+                        <span class="value">Хаотичный добрый</span>
                     </div>
                 </div>
                 <div class="dnd-divider">✦ ✦ ✦</div>
             </div>
 
-            <div class="card tilt-card" data-tilt data-tilt-max="5" data-tilt-speed="600" data-tilt-perspective="1200" data-tilt-glare="true" data-tilt-glare-max="0.15" data-tilt-scale="1.03">
-                <div class="card-title"><i class="fas fa-microchip"></i> Setup (Железо)</div>
+            <!-- КАРТОЧКА: ЖЕЛЕЗО -->
+            <div class="card tilt-card" data-tilt>
+                <div class="card-title"><i class="fas fa-microchip"></i> Артефакты (Setup)</div>
                 <div class="spec-list">
-                    <div class="spec-row"><span class="spec-name"><i class="fas fa-memory"></i> Оперативная память</span><span class="spec-value">32 ГБ DDR5</span></div>
-                    <div class="spec-row"><span class="spec-name"><i class="fas fa-microchip"></i> Процессор</span><span class="spec-value">Ryzen 5 5600</span></div>
-                    <div class="spec-row"><span class="spec-name"><i class="fas fa-tv"></i> Видеокарта</span><span class="spec-value">Nvidia RTX 3060 Ti</span></div>
-                    <div class="spec-row"><span class="spec-name"><i class="fas fa-server"></i> Материнская плата</span><span class="spec-value">B550</span></div>
-                    <div class="spec-row"><span class="spec-name"><i class="fas fa-vr-cardboard"></i> VR-шлем</span><span class="spec-value">Oculus Quest 2 + BoboVR</span></div>
-                    <div class="spec-row"><span class="spec-name"><i class="fas fa-gamepad"></i> Контроллеры</span><span class="spec-value">силиконовые чехлы</span></div>
+                    <div class="spec-row"><span class="spec-name">Процессор</span><span class="spec-value">Ryzen 5 5600</span></div>
+                    <div class="spec-row"><span class="spec-name">Видеокарта</span><span class="spec-value">RTX 3060 Ti</span></div>
+                    <div class="spec-row"><span class="spec-name">Память</span><span class="spec-value">32 GB DDR4</span></div>
+                    <div class="spec-row"><span class="spec-name">Плата</span><span class="spec-value">B550 Архитектура</span></div>
+                    <div class="spec-row">
+                        <span class="spec-name">VR Шлем</span>
+                        <span class="spec-value highlight">Quest 2 + BoboVR</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="card tilt-card" data-tilt data-tilt-max="5" data-tilt-speed="600" data-tilt-perspective="1200" data-tilt-glare="true" data-tilt-glare-max="0.15" data-tilt-scale="1.03">
-                <div class="card-title"><i class="fas fa-trophy"></i> Легенды донатов</div>
-                <div class="donation-empty">
-                    <i class="fas fa-inbox"></i>
-                    <div class="empty-title">Скоро здесь появятся топ-донатеры</div>
-                    <div class="empty-sub">
-                        <i class="fas fa-arrow-right"></i> Следи за стримом <i class="fas fa-arrow-left"></i>
+            <!-- КАРТОЧКА: ДОНАТЫ -->
+            <div class="card tilt-card" data-tilt>
+                <div class="card-title"><i class="fas fa-trophy"></i> Сокровищница</div>
+                <div class="donation-list">
+                    <!-- Заглушка, если пусто -->
+                    <div class="donation-item top-1">
+                        <span class="donator-name">Ожидаем героя...</span>
+                        <span class="donator-amount">0 XP</span>
+                    </div>
+                    <div class="donation-empty">
+                        <p>Стань первым в списке легенд!</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="card tilt-card" data-tilt data-tilt-max="4" data-tilt-speed="600" data-tilt-perspective="1200" data-tilt-glare="true" data-tilt-glare-max="0.1" data-tilt-scale="1.02" style="margin-top: 0.5rem;">
-            <div class="card-title"><i class="fas fa-link"></i> Медиа &amp; Связь</div>
+        <!-- КАРТОЧКА: СОЦСЕТИ -->
+        <div class="card social-card">
+            <div class="card-title"><i class="fas fa-link"></i> Порталы в другие миры</div>
             <div class="social-grid">
-                <a href="#" class="social-link"><i class="fab fa-twitch"></i> Twitch</a>
-                <a href="#" class="social-link"><i class="fab fa-telegram"></i> Telegram</a>
-                <a href="#" class="social-link"><i class="fab fa-youtube"></i> YouTube</a>
-                <a href="#" class="social-link"><i class="fab fa-tiktok"></i> TikTok</a>
-                <a href="#" class="social-link"><i class="fab fa-vk"></i> ВКонтакте</a>
-                <a href="#" class="social-link"><i class="fab fa-discord"></i> Discord</a>
-                <a href="#" class="social-link"><i class="fab fa-instagram"></i> Instagram</a>
-                <a href="#" class="social-link"><i class="fab fa-steam"></i> Steam</a>
-                <a href="#" class="social-link"><i class="fab fa-soundcloud"></i> SoundCloud</a>
+                <a href="#" class="social-link tw"><i class="fab fa-twitch"></i> Twitch</a>
+                <a href="#" class="social-link tg"><i class="fab fa-telegram"></i> Telegram</a>
+                <a href="#" class="social-link yt"><i class="fab fa-youtube"></i> YouTube</a>
+                <a href="#" class="social-link tk"><i class="fab fa-tiktok"></i> TikTok</a>
+                <a href="#" class="social-link vk"><i class="fab fa-vk"></i> ВКонтакте</a>
+                <a href="#" class="social-link ds"><i class="fab fa-discord"></i> Discord</a>
+                <a href="#" class="social-link st"><i class="fab fa-steam"></i> Steam</a>
             </div>
             <div class="donate-methods">
-                <span><i class="fas fa-donate"></i> DonationAlerts (основной)</span>
-                <span><i class="fas fa-music"></i> MemeAlerts (мем / звук)</span>
+                <a href="#" class="donate-btn"><i class="fas fa-coins"></i> Поддержать заклинанием (DonationAlerts)</a>
             </div>
         </div>
 
         <div class="footer">
-            <i class="fas fa-shield-alt"></i> Инфо-хаб обновляется в реальном времени • 2026
+            <i class="fas fa-shield-alt"></i> Последнее обновление: 2024 • Создано для Tviltofer
         </div>
-
     </div>
 
     <script src="js/script.js"></script>
