@@ -1,0 +1,57 @@
+/* ================================================ */
+/* ДОПОЛНИТЕЛЬНЫЙ 3D ПОДЪЁМ ДЛЯ КАРТОЧЕК */
+/* ================================================ */
+
+/* Базовый эффект при наведении — карточка поднимается вверх */
+.tilt-card {
+    transition: transform 0.4s cubic-bezier(.25, .46, .45, .94), box-shadow 0.4s ease;
+    will-change: transform;
+}
+
+/* Эффект "парения" — карточка приподнимается над фоном */
+.tilt-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(139, 92, 246, 0.2), 
+                0 8px 32px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(139, 92, 246, 0.2);
+}
+
+/* Слой с содержимым — приподнимается дополнительно */
+.tilt-card .card-title,
+.tilt-card .profile-grid,
+.tilt-card .spec-list,
+.tilt-card .donation-empty,
+.tilt-card .social-grid,
+.tilt-card .donate-methods {
+    transform: translateZ(15px);
+    transition: transform 0.4s ease;
+}
+
+/* Эффект глубины для внутренних элементов */
+.tilt-card .card-title i {
+    transform: translateZ(25px);
+    transition: transform 0.4s ease;
+}
+
+/* ================================================ */
+/* ДОПОЛНИТЕЛЬНО: СВЕЧЕНИЕ ПРИ НАВЕДЕНИИ */
+/* ================================================ */
+
+.tilt-card::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 26px;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(167, 139, 250, 0.05));
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.tilt-card:hover::after {
+    opacity: 1;
+}
