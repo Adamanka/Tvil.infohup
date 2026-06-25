@@ -22,6 +22,8 @@
             --accent: #8b5cf6;
             --accent-light: #a78bfa;
             --accent-glow: rgba(139, 92, 246, 0.25);
+            --gold-start: #f6d365;
+            --gold-end: #fda085;
         }
 
         * {
@@ -71,34 +73,13 @@
             border-radius: 50%;
             object-fit: cover;
             border: 3px solid var(--accent);
-            box-shadow: 0 0 40px rgba(139, 92, 246, 0.3), inset 0 0 40px rgba(139, 92, 246, 0.1);
+            box-shadow: 0 0 40px rgba(139, 92, 246, 0.3);
             transition: box-shadow 0.3s, transform 0.3s;
         }
 
         .avatar-wrapper img:hover {
             box-shadow: 0 0 60px rgba(139, 92, 246, 0.5);
             transform: scale(1.02);
-        }
-
-        .avatar-wrapper .glow-ring {
-            position: absolute;
-            top: -6px;
-            left: -6px;
-            width: 132px;
-            height: 132px;
-            border-radius: 50%;
-            border: 2px solid transparent;
-            background: conic-gradient(from 0deg, var(--accent), var(--accent-light), var(--accent)) border-box;
-            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0.6;
-            animation: spinGlow 4s linear infinite;
-        }
-
-        @keyframes spinGlow {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
 
         .streamer-header {
@@ -116,40 +97,30 @@
             letter-spacing: -0.5px;
         }
 
-        /* ----- D&D СТИЛЬ ДЛЯ ПОДПИСИ ----- */
+        /* ----- ЗОЛОТОЙ ГРАДИЕНТ ДЛЯ ПОДПИСИ (как на скриншоте) ----- */
         .streamer-sub {
             font-family: 'MedievalSharp', cursive;
-            font-size: 1.2rem;
-            color: #d4b8a0;
-            text-shadow: 
-                0 0 10px rgba(180, 120, 80, 0.2),
-                0 2px 4px rgba(0, 0, 0, 0.8);
-            letter-spacing: 1.5px;
-            background: linear-gradient(180deg, #d4b8a0 0%, #b89470 50%, #8a7050 100%);
+            font-size: 1.3rem;
+            font-weight: 600;
+            background: linear-gradient(180deg, #f9d976 0%, #f39c12 40%, #e67e22 70%, #d35400 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            text-shadow: 
+                0 0 30px rgba(243, 156, 18, 0.15),
+                0 2px 4px rgba(0, 0, 0, 0.6);
+            letter-spacing: 1px;
             position: relative;
-            padding: 0.2rem 1.2rem;
-        }
-
-        .streamer-sub::before,
-        .streamer-sub::after {
-            content: "✦";
-            font-size: 0.7rem;
-            color: #b89470;
-            -webkit-text-fill-color: initial;
-            position: relative;
-            margin: 0 6px;
-            opacity: 0.6;
+            padding: 0.2rem 0.5rem;
         }
 
         .streamer-sub .dnd-icon {
             -webkit-text-fill-color: initial;
-            color: #b89470;
+            color: #f39c12;
             font-size: 0.8rem;
             margin: 0 4px;
-            opacity: 0.5;
+            opacity: 0.7;
+            text-shadow: 0 0 20px rgba(243, 156, 18, 0.2);
         }
 
         /* ----- СЕТКА ----- */
@@ -374,12 +345,6 @@
                 width: 90px;
                 height: 90px;
             }
-            .avatar-wrapper .glow-ring {
-                width: 102px;
-                height: 102px;
-                top: -6px;
-                left: -6px;
-            }
         }
 
         /* Футер */
@@ -405,15 +370,14 @@
     <header class="hub-header">
         <!-- АВАТАРКА - ЗАМЕНИ src НА СВОЙ ПУТЬ К PNG -->
         <div class="avatar-wrapper">
-            <img src="avatar.png" alt="Tviltofer" id="avatar">
-            <div class="glow-ring"></div>
+            <img src="panel-725148728-image-906ba593-b098-429e-90fb-d9854ac12596.png" alt="Tviltofer" id="avatar">
         </div>
 
         <div class="streamer-header">
             <div class="streamer-nick">Tviltofer</div>
             <div class="streamer-sub">
                 <i class="fas fa-dragon dnd-icon"></i>
-                Я — Тви́лтофер Rwizardser
+                Я – Тви́ттофер Rwizardser
                 <i class="fas fa-hat-wizard dnd-icon"></i>
             </div>
         </div>
