@@ -1,117 +1,647 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Инфо-Хаб Tviltofer • Wizard Edition</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=MedievalSharp&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js" defer></script>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Инфо-хаб · Tviltofer</title>
+
+  <!-- Шрифты -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700;14..32,800&family=MedievalSharp&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+  <!-- Vanilla Tilt для 3D-эффектов -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js">
+  </script>
+
+  <style>
+    /* ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ===== */
+    :root {
+      --bg-primary: #0a0812;
+      --bg-card: #110d1f;
+      --border-color: #2d1f4a;
+      --text-primary: #e8e0f5;
+      --text-secondary: #a894d0;
+      --text-muted: #6b5b8a;
+      --accent: #8b5cf6;
+      --accent-light: #a78bfa;
+      --accent-glow: rgba(139, 92, 246, 0.3);
+      --gold: #f6d365;
+      --gold-dark: #d35400;
+      --gold-glow: rgba(243, 156, 18, 0.25);
+      --parchment: #d4c8a0;
+    }
+
+    /* ===== ОБЩИЕ СТИЛИ ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      padding: 2rem 1.5rem;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      background-image:
+        radial-gradient(ellipse at 20% 50%, #1a0f2e 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, #140a24 0%, transparent 50%),
+        var(--bg-primary);
+    }
+
+    .container {
+      max-width: 1300px;
+      width: 100%;
+    }
+
+    /* ===== ШАПКА ===== */
+    .hub-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    /* Аватарка */
+    .avatar-wrapper img {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--accent);
+      box-shadow: 0 0 40px var(--accent-glow), inset 0 0 30px rgba(139, 92, 246, 0.1);
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+
+    .avatar-wrapper img:hover {
+      box-shadow: 0 0 70px var(--accent-glow), 0 0 100px rgba(139, 92, 246, 0.15);
+      transform: scale(1.02);
+    }
+
+    /* Имя */
+    .streamer-nick {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #d4caf0;
+      text-shadow: 0 0 50px rgba(139, 92, 246, 0.25);
+      letter-spacing: -0.5px;
+      margin-top: 0.8rem;
+    }
+
+    /* Подпись */
+    .streamer-sub {
+      font-family: 'MedievalSharp', cursive;
+      font-size: 1.4rem;
+      font-weight: 600;
+      background: linear-gradient(180deg, #f9d976 0%, #f39c12 40%, #e67e22 70%, #d35400 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 40px var(--gold-glow);
+      letter-spacing: 1px;
+      margin-top: 0.2rem;
+    }
+
+    .streamer-sub i {
+      -webkit-text-fill-color: initial;
+      color: #f39c12;
+      font-size: 0.9rem;
+      margin: 0 6px;
+      opacity: 0.8;
+    }
+
+    /* ===== СЕТКА КАРТОЧЕК ===== */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 1.8rem;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ===== КАРТОЧКИ ===== */
+    .card {
+      position: relative;
+      background: var(--bg-card);
+      border-radius: 24px;
+      padding: 1.6rem 1.8rem;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.4s ease;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 12px 40px rgba(139, 92, 246, 0.15);
+      transform: translateY(-4px);
+    }
+
+    .card-wide {
+      margin-bottom: 0.5rem;
+    }
+
+    .card-title {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      margin-bottom: 1.2rem;
+      border-bottom: 1px solid #1f1735;
+      padding-bottom: 0.7rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-title i {
+      color: var(--accent-light);
+      font-size: 1rem;
+      width: 22px;
+    }
+
+    .card-icon-right {
+      margin-left: auto;
+      font-family: 'MedievalSharp', cursive;
+      font-size: 0.9rem;
+      color: var(--gold);
+      opacity: 0.5;
+    }
+
+    /* ===== КАРТОЧКА №1: ДОСЬЕ ===== */
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem 1.5rem;
+    }
+
+    .profile-item {
+      display: flex;
+      flex-direction: column;
+      background: rgba(139, 92, 246, 0.05);
+      border-radius: 8px;
+      padding: 0.3rem 0.6rem;
+      border-left: 2px solid var(--accent);
+    }
+
+    .profile-item .label {
+      font-family: 'MedievalSharp', cursive;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      color: var(--accent-light);
+      letter-spacing: 1px;
+    }
+
+    .profile-item .label i {
+      margin-right: 4px;
+      font-size: 0.6rem;
+    }
+
+    .profile-item .value {
+      font-family: 'MedievalSharp', cursive;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-top: 2px;
+      color: var(--parchment);
+      letter-spacing: 0.5px;
+    }
+
+    .profile-item .value.dragon {
+      color: var(--gold);
+      text-shadow: 0 0 20px var(--gold-glow);
+    }
+
+    .profile-item .value.femboy {
+      color: #f5a0d0;
+      text-shadow: 0 0 20px rgba(245, 160, 208, 0.2);
+    }
+
+    .dnd-divider {
+      margin-top: 0.8rem;
+      text-align: center;
+      font-family: 'MedievalSharp', cursive;
+      font-size: 0.6rem;
+      color: var(--text-muted);
+      opacity: 0.3;
+      letter-spacing: 3px;
+    }
+
+    /* ===== КАРТОЧКА №2: ЖЕЛЕЗО ===== */
+    .spec-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .spec-row {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dashed #1f1735;
+      padding-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    .spec-row .spec-name {
+      color: var(--text-secondary);
+    }
+
+    .spec-row .spec-name i {
+      margin-right: 6px;
+      color: var(--accent-light);
+      width: 18px;
+    }
+
+    .spec-row .spec-value {
+      font-weight: 600;
+      color: #e4dbf5;
+      text-align: right;
+    }
+
+    /* ===== КАРТОЧКА №3: ТОП ДОНАТОВ (ПУСТОЙ) ===== */
+    .donation-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .donation-empty i {
+      font-size: 3rem;
+      color: var(--text-muted);
+      opacity: 0.3;
+      margin-bottom: 0.8rem;
+    }
+
+    .donation-empty .empty-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 0.2rem;
+    }
+
+    .donation-empty .empty-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* ===== КАРТОЧКА №4: СОЦСЕТИ С ЭФФЕКТОМ СИЯНИЯ ===== */
+    .social-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 0.8rem;
+    }
+
+    .social-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.4rem 0.9rem;
+      border-radius: 10px;
+      transition: 0.25s;
+      position: relative;
+      background: rgba(17, 13, 31, 0.5);
+      border: 1px solid transparent;
+    }
+
+    /* Эффект сияния при наведении */
+    .social-link::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--gold), var(--accent));
+      background-size: 200% 200%;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: -1;
+      animation: shimmerBorder 3s ease infinite;
+    }
+
+    .social-link:hover::before {
+      opacity: 1;
+    }
+
+    @keyframes shimmerBorder {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .social-link:hover {
+      color: #ffffff;
+      background: rgba(139, 92, 246, 0.15);
+      transform: scale(1.04);
+      box-shadow: 0 0 30px rgba(139, 92, 246, 0.2), 0 0 60px rgba(139, 92, 246, 0.05);
+      border-color: var(--accent);
+    }
+
+    .social-link i {
+      font-size: 1.2rem;
+      width: 22px;
+      color: var(--accent-light);
+      transition: 0.25s;
+    }
+
+    .social-link:hover i {
+      color: #fff;
+      filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.5));
+    }
+
+    /* ===== СТИЛИЗОВАННЫЕ ССЫЛКИ НА ДОНАТЫ ===== */
+    .donate-links {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding-top: 0.8rem;
+      border-top: 1px solid #1f1735;
+    }
+
+    .donate-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.5rem 1.2rem;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--text-primary);
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(243, 156, 18, 0.1));
+      border: 1px solid var(--border-color);
+      transition: 0.3s;
+    }
+
+    .donate-link:hover {
+      border-color: var(--gold);
+      box-shadow: 0 0 30px var(--gold-glow), 0 0 60px rgba(243, 156, 18, 0.05);
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(243, 156, 18, 0.15));
+    }
+
+    .donate-link i {
+      font-size: 1.1rem;
+      color: var(--gold);
+    }
+
+    /* ===== ФУТЕР ===== */
+    .footer {
+      margin-top: 2.5rem;
+      font-size: 0.7rem;
+      color: #3a2d52;
+      text-align: center;
+      border-top: 1px solid #1a112a;
+      padding-top: 1.5rem;
+    }
+
+    .footer i {
+      color: var(--accent);
+      margin-right: 4px;
+    }
+
+    /* ===== АДАПТИВНОСТЬ ===== */
+    @media (max-width: 700px) {
+      body {
+        padding: 1rem;
+      }
+
+      .profile-grid {
+        grid-template-columns: 1fr;
+        gap: 0.6rem;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .streamer-nick {
+        font-size: 1.8rem;
+      }
+
+      .streamer-sub {
+        font-size: 1.1rem;
+      }
+
+      .avatar-wrapper img {
+        width: 130px;
+        height: 130px;
+      }
+
+      .social-grid {
+        gap: 0.3rem 0.5rem;
+      }
+
+      .social-link {
+        font-size: 0.85rem;
+        padding: 0.3rem 0.7rem;
+      }
+
+      .donate-links {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
 
-        <header class="hub-header">
-            <div class="avatar-wrapper">
-                <img src="avatar.png" alt="Tviltofer" id="avatar">
-                <div class="status-badge">ONLINE</div>
-            </div>
-            <div class="streamer-header">
-                <div class="streamer-nick">Tviltofer</div>
-                <div class="streamer-sub">
-                    <i class="fas fa-dragon dnd-icon"></i>
-                    Твиттофер Rwizardser
-                    <i class="fas fa-hat-wizard dnd-icon"></i>
-                </div>
-            </div>
-        </header>
+  <div class="container">
 
-        <div class="grid">
-            <!-- КАРТОЧКА: ЛИСТ ПЕРСОНАЖА -->
-            <div class="card tilt-card" data-tilt>
-                <div class="card-title">
-                    <i class="fas fa-scroll"></i> 
-                    Лист персонажа
-                    <span class="level-badge">LVL 26</span>
-                </div>
-                <div class="profile-grid">
-                    <div class="profile-item attribute">
-                        <span class="label">Имя</span>
-                        <span class="value">Твиттофер</span>
-                    </div>
-                    <div class="profile-item attribute">
-                        <span class="label">Раса</span>
-                        <span class="value">Маг-Визард</span>
-                    </div>
-                    <div class="profile-item attribute">
-                        <span class="label">Специализация</span>
-                        <span class="value">VR & Игры</span>
-                    </div>
-                    <div class="profile-item attribute">
-                        <span class="label">Мировоззрение</span>
-                        <span class="value">Хаотичный добрый</span>
-                    </div>
-                </div>
-                <div class="dnd-divider">✦ ✦ ✦</div>
-            </div>
+    <!-- ============================================ -->
+    <!-- ШАПКА -->
+    <!-- ============================================ -->
+    <header class="hub-header">
+      <div class="avatar-wrapper">
+        <img src="avatar.png" alt="Tviltofer" />
+      </div>
+      <div class="streamer-nick">Tviltofer</div>
+      <div class="streamer-sub">
+        <i class="fas fa-dragon"></i>
+        Я — Тви́лтофер Rwizardser
+        <i class="fas fa-hat-wizard"></i>
+      </div>
+    </header>
 
-            <!-- КАРТОЧКА: ЖЕЛЕЗО -->
-            <div class="card tilt-card" data-tilt>
-                <div class="card-title"><i class="fas fa-microchip"></i> Артефакты (Setup)</div>
-                <div class="spec-list">
-                    <div class="spec-row"><span class="spec-name">Процессор</span><span class="spec-value">Ryzen 5 5600</span></div>
-                    <div class="spec-row"><span class="spec-name">Видеокарта</span><span class="spec-value">RTX 3060 Ti</span></div>
-                    <div class="spec-row"><span class="spec-name">Память</span><span class="spec-value">32 GB DDR4</span></div>
-                    <div class="spec-row"><span class="spec-name">Плата</span><span class="spec-value">B550 Архитектура</span></div>
-                    <div class="spec-row">
-                        <span class="spec-name">VR Шлем</span>
-                        <span class="spec-value highlight">Quest 2 + BoboVR</span>
-                    </div>
-                </div>
-            </div>
+    <!-- ============================================ -->
+    <!-- СЕТКА КАРТОЧЕК (3 шт.) -->
+    <!-- ============================================ -->
+    <div class="grid">
 
-            <!-- КАРТОЧКА: ДОНАТЫ -->
-            <div class="card tilt-card" data-tilt>
-                <div class="card-title"><i class="fas fa-trophy"></i> Сокровищница</div>
-                <div class="donation-list">
-                    <!-- Заглушка, если пусто -->
-                    <div class="donation-item top-1">
-                        <span class="donator-name">Ожидаем героя...</span>
-                        <span class="donator-amount">0 XP</span>
-                    </div>
-                    <div class="donation-empty">
-                        <p>Стань первым в списке легенд!</p>
-                    </div>
-                </div>
-            </div>
+      <!-- КАРТОЧКА 1: ДОСЬЕ -->
+      <div class="card tilt-card">
+        <div class="card-title">
+          <i class="fas fa-scroll"></i> Досье
+          <span class="card-icon-right">🐉</span>
         </div>
-
-        <!-- КАРТОЧКА: СОЦСЕТИ -->
-        <div class="card social-card">
-            <div class="card-title"><i class="fas fa-link"></i> Порталы в другие миры</div>
-            <div class="social-grid">
-                <a href="#" class="social-link tw"><i class="fab fa-twitch"></i> Twitch</a>
-                <a href="#" class="social-link tg"><i class="fab fa-telegram"></i> Telegram</a>
-                <a href="#" class="social-link yt"><i class="fab fa-youtube"></i> YouTube</a>
-                <a href="#" class="social-link tk"><i class="fab fa-tiktok"></i> TikTok</a>
-                <a href="#" class="social-link vk"><i class="fab fa-vk"></i> ВКонтакте</a>
-                <a href="#" class="social-link ds"><i class="fab fa-discord"></i> Discord</a>
-                <a href="#" class="social-link st"><i class="fab fa-steam"></i> Steam</a>
-            </div>
-            <div class="donate-methods">
-                <a href="#" class="donate-btn"><i class="fas fa-coins"></i> Поддержать заклинанием (DonationAlerts)</a>
-            </div>
+        <div class="profile-grid">
+          <div class="profile-item">
+            <span class="label"><i class="fas fa-dragon"></i> Раса</span>
+            <span class="value dragon">Дракон</span>
+          </div>
+          <div class="profile-item">
+            <span class="label"><i class="fas fa-hourglass-half"></i> Возраст</span>
+            <span class="value">???</span>
+          </div>
+          <div class="profile-item">
+            <span class="label"><i class="fas fa-venus-mars"></i> Пол</span>
+            <span class="value">Мужской</span>
+          </div>
+          <div class="profile-item">
+            <span class="label"><i class="fas fa-smile"></i> Характер</span>
+            <span class="value femboy">Дружелюбный фембой</span>
+          </div>
         </div>
+        <div class="dnd-divider">✦ ✦ ✦</div>
+      </div>
 
-        <div class="footer">
-            <i class="fas fa-shield-alt"></i> Последнее обновление: 2024 • Создано для Tviltofer
+      <!-- КАРТОЧКА 2: ЖЕЛЕЗО -->
+      <div class="card tilt-card">
+        <div class="card-title">
+          <i class="fas fa-microchip"></i> Железо
         </div>
+        <div class="spec-list">
+          <div class="spec-row">
+            <span class="spec-name"><i class="fas fa-memory"></i> Оперативная память</span>
+            <span class="spec-value">32 ГБ DDR5</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-name"><i class="fas fa-microchip"></i> Процессор</span>
+            <span class="spec-value">Ryzen 5 5600</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-name"><i class="fas fa-tv"></i> Видеокарта</span>
+            <span class="spec-value">Nvidia RTX 3060 Ti</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-name"><i class="fas fa-server"></i> Материнская плата</span>
+            <span class="spec-value">B550</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-name"><i class="fas fa-vr-cardboard"></i> VR-шлем</span>
+            <span class="spec-value">Oculus Quest 2 + BoboVR</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-name"><i class="fas fa-gamepad"></i> Контроллеры</span>
+            <span class="spec-value">Силиконовые чехлы</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- КАРТОЧКА 3: ТОП ДОНАТОВ (ПУСТОЙ) -->
+      <div class="card tilt-card">
+        <div class="card-title">
+          <i class="fas fa-trophy"></i> Топ донатов
+          <span class="card-icon-right">👑</span>
+        </div>
+        <div class="donation-empty">
+          <i class="fas fa-inbox"></i>
+          <div class="empty-title">Скоро здесь появятся топ-донатеры</div>
+          <div class="empty-sub">
+            <i class="fas fa-arrow-right"></i> Следи за стримом <i class="fas fa-arrow-left"></i>
+          </div>
+        </div>
+        <div class="dnd-divider" style="margin-top: 0.6rem;">⚡ Поддержи стримера! ⚡</div>
+      </div>
+
     </div>
 
-    <script src="js/script.js"></script>
+    <!-- ============================================ -->
+    <!-- КАРТОЧКА №4: СОЦСЕТИ + ССЫЛКИ НА ДОНАТЫ -->
+    <!-- ============================================ -->
+    <div class="card tilt-card card-wide">
+      <div class="card-title">
+        <i class="fas fa-link"></i> Медиа &amp; Связь
+      </div>
+
+      <div class="social-grid">
+        <a href="https://www.twitch.tv/tviltofer" target="_blank" class="social-link"><i class="fab fa-twitch"></i> Twitch</a>
+        <a href="https://discord.com/invite/ZjJED3ZFna" target="_blank" class="social-link"><i class="fab fa-discord"></i> Discord</a>
+        <a href="https://t.me/Tviltofer" target="_blank" class="social-link"><i class="fab fa-telegram"></i> Telegram</a>
+        <a href="https://boosty.to/tviltofer" target="_blank" class="social-link"><i class="fas fa-crown"></i> Boosty</a>
+        <a href="https://x.com/tviltofer" target="_blank" class="social-link"><i class="fab fa-twitter"></i> Twitter</a>
+        <a href="https://vk.com/tviltofervtuber" target="_blank" class="social-link"><i class="fab fa-vk"></i> ВКонтакте</a>
+      </div>
+
+      <!-- Стилизованные ссылки на донаты -->
+      <div class="donate-links">
+        <a href="https://new.donatepay.ru/@1109411" target="_blank" class="donate-link"><i class="fas fa-coins"></i> DonatePay</a>
+        <a href="https://www.donationalerts.com/r/tviltofer" target="_blank" class="donate-link"><i class="fas fa-donate"></i> DonationAlerts</a>
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- ФУТЕР -->
+    <!-- ============================================ -->
+    <div class="footer">
+      <i class="fas fa-shield-alt"></i> Инфо-хаб обновляется в реальном времени • 2026
+    </div>
+
+  </div>
+
+  <script>
+    // ================================================
+    // 3D ЭФФЕКТ ДЛЯ КАРТОЧЕК (Vanilla Tilt)
+    // ================================================
+
+    document.addEventListener('DOMContentLoaded', function() {
+
+      const tiltElements = document.querySelectorAll('.tilt-card');
+
+      if (tiltElements.length > 0 && typeof VanillaTilt !== 'undefined') {
+        VanillaTilt.init(tiltElements, {
+          max: 6,
+          speed: 600,
+          perspective: 1200,
+          easing: 'cubic-bezier(.25,.46,.45,.94)',
+          glare: true,
+          'max-glare': 0.15,
+          scale: 1.02,
+          'reset-to-start': true,
+          gyroscope: true,
+          gyroscopeMinAngleX: -30,
+          gyroscopeMaxAngleX: 30,
+          gyroscopeMinAngleY: -30,
+          gyroscopeMaxAngleY: 30
+        });
+      }
+
+      // Плавное появление карточек
+      const cards = document.querySelectorAll('.card');
+      cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+
+        setTimeout(() => {
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }, 100 + index * 100);
+      });
+
+      console.log('🐉 Инфо-хаб Tviltofer загружен!');
+    });
+  </script>
+
 </body>
 </html>
