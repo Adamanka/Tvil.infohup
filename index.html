@@ -5,20 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Инфо-хаб · Tviltofer</title>
 
-  <!-- Шрифты -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700;14..32,800&family=MedievalSharp&display=swap" rel="stylesheet" />
-
-  <!-- Font Awesome 6 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-
-  <!-- Vanilla Tilt для 3D-эффектов -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js">
   </script>
 
   <style>
-    /* ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ===== */
     :root {
       --bg-primary: #0a0812;
       --bg-card: #110d1f;
@@ -35,7 +29,6 @@
       --parchment: #d4c8a0;
     }
 
-    /* ===== ОБЩИЕ СТИЛИ ===== */
     * {
       margin: 0;
       padding: 0;
@@ -55,7 +48,6 @@
       cursor: default;
     }
 
-    /* ===== ИНТЕРАКТИВНЫЙ ЗВЁЗДНЫЙ ФОН ===== */
     #stars-canvas {
       position: fixed;
       top: 0;
@@ -91,7 +83,7 @@
       z-index: 1;
     }
 
-    /* ===== КНОПКА ЗВУКА (СЛЕВА СНИЗУ) ===== */
+    /* ===== КНОПКА ЗВУКА ===== */
     #sound-toggle {
       position: fixed;
       bottom: 30px;
@@ -380,20 +372,29 @@
       background: rgba(243, 156, 18, 0.05);
     }
 
-    /* ===== ШАПКА ===== */
+    /* ===== ШАПКА С ПЛЕЕРОМ ===== */
     .hub-header {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
       margin-bottom: 2.5rem;
       padding-bottom: 1.5rem;
       border-bottom: 1px solid var(--border-color);
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .header-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      min-width: 200px;
     }
 
     .avatar-wrapper img {
-      width: 160px;
-      height: 160px;
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
       object-fit: cover;
       border: 3px solid var(--accent);
@@ -407,17 +408,73 @@
     }
 
     .streamer-nick {
-      font-size: 2.4rem;
+      font-size: 2rem;
       font-weight: 800;
       color: #d4caf0;
       text-shadow: 0 0 50px rgba(139, 92, 246, 0.25);
       letter-spacing: -0.5px;
-      margin-top: 0.8rem;
+      margin-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .streamer-status {
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0.2rem 0.8rem;
+      border-radius: 20px;
+      background: rgba(17, 13, 31, 0.6);
+      border: 1px solid var(--border-color);
+    }
+
+    .streamer-status.online {
+      color: #4caf50;
+      border-color: rgba(76, 175, 80, 0.3);
+    }
+
+    .streamer-status.offline {
+      color: #ef5350;
+      border-color: rgba(244, 67, 54, 0.2);
+    }
+
+    .streamer-status .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    .streamer-status.online .dot {
+      background: #4caf50;
+    }
+
+    .streamer-status.offline .dot {
+      background: #ef5350;
+      animation: none;
+    }
+
+    @keyframes pulse-dot {
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.5;
+        transform: scale(0.8);
+      }
     }
 
     .streamer-sub {
       font-family: 'MedievalSharp', cursive;
-      font-size: 1.4rem;
+      font-size: 1.2rem;
       font-weight: 600;
       background: linear-gradient(180deg, #f9d976 0%, #f39c12 40%, #e67e22 70%, #d35400 100%);
       -webkit-background-clip: text;
@@ -436,10 +493,60 @@
       opacity: 0.8;
     }
 
+    /* ===== ПЛЕЕР СПРАВА ===== */
+    .stream-player {
+      flex-shrink: 0;
+      width: 320px;
+      height: 180px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 2px solid var(--border-color);
+      background: #0a0812;
+      transition: border-color 0.3s;
+      position: relative;
+    }
+
+    .stream-player:hover {
+      border-color: var(--accent);
+    }
+
+    .stream-player iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .stream-player .offline-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(10, 8, 18, 0.9);
+      color: var(--text-muted);
+      gap: 8px;
+    }
+
+    .stream-player .offline-overlay i {
+      font-size: 2.5rem;
+      opacity: 0.3;
+    }
+
+    .stream-player .offline-overlay span {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .stream-player .offline-overlay .sub {
+      font-size: 0.7rem;
+      opacity: 0.5;
+    }
+
     /* ===== СЕТКА КАРТОЧЕК ===== */
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 1.8rem;
       margin-bottom: 2.5rem;
     }
@@ -494,7 +601,7 @@
       opacity: 0.5;
     }
 
-    /* ===== КАРТОЧКА №1: ДОСЬЕ ===== */
+    /* ===== ДОСЬЕ ===== */
     .profile-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -552,7 +659,7 @@
       letter-spacing: 3px;
     }
 
-    /* ===== КАРТОЧКА №2: ЖЕЛЕЗО ===== */
+    /* ===== ЖЕЛЕЗО ===== */
     .spec-list {
       display: flex;
       flex-direction: column;
@@ -583,7 +690,7 @@
       text-align: right;
     }
 
-    /* ===== КАРТОЧКА №3: ТОП ДОНАТОВ (ПУСТОЙ) ===== */
+    /* ===== ТОП ДОНАТОВ ===== */
     .donation-empty {
       display: flex;
       flex-direction: column;
@@ -613,7 +720,7 @@
       color: var(--text-muted);
     }
 
-    /* ===== КАРТОЧКА №4: СОЦСЕТИ ===== */
+    /* ===== СОЦСЕТИ ===== */
     .social-grid {
       display: flex;
       flex-wrap: wrap;
@@ -684,7 +791,7 @@
       filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.5));
     }
 
-    /* ===== СТИЛИЗОВАННЫЕ ССЫЛКИ НА ДОНАТЫ ===== */
+    /* ===== ДОНАТ-ССЫЛКИ ===== */
     .donate-links {
       margin-top: 1rem;
       display: flex;
@@ -767,6 +874,28 @@
     }
 
     /* ===== АДАПТИВНОСТЬ ===== */
+    @media (max-width: 860px) {
+      .hub-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .stream-player {
+        width: 100%;
+        max-width: 400px;
+        height: 225px;
+      }
+
+      .header-left {
+        width: 100%;
+      }
+
+      .streamer-nick {
+        justify-content: center;
+      }
+    }
+
     @media (max-width: 700px) {
       body {
         padding: 1rem;
@@ -782,16 +911,16 @@
       }
 
       .streamer-nick {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
       }
 
       .streamer-sub {
-        font-size: 1.1rem;
+        font-size: 1rem;
       }
 
       .avatar-wrapper img {
-        width: 130px;
-        height: 130px;
+        width: 100px;
+        height: 100px;
       }
 
       .social-grid {
@@ -828,18 +957,22 @@
         height: 44px;
         font-size: 1.2rem;
       }
+
+      .stream-player {
+        height: 180px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- ===== ИНТЕРАКТИВНЫЙ ЗВЁЗДНЫЙ ФОН ===== -->
+  <!-- ===== ЗВЁЗДНЫЙ ФОН ===== -->
   <canvas id="stars-canvas"></canvas>
 
   <!-- ===== СВЕЧЕНИЕ ЗА КУРСОРОМ ===== -->
   <div id="cursor-glow"></div>
 
-  <!-- ===== КНОПКА ЗВУКА (СЛЕВА СНИЗУ) ===== -->
+  <!-- ===== КНОПКА ЗВУКА ===== -->
   <button id="sound-toggle" title="Включить/выключить звук">
     🔊
     <span class="tooltip">Звук включён</span>
@@ -871,17 +1004,35 @@
   <div class="container">
 
     <!-- ============================================ -->
-    <!-- ШАПКА -->
+    <!-- ШАПКА С АВАТАРКОЙ И ПЛЕЕРОМ -->
     <!-- ============================================ -->
     <header class="hub-header">
-      <div class="avatar-wrapper">
-        <img src="avatar.png" alt="Tviltofer" id="avatar-img" />
+      <div class="header-left">
+        <div class="avatar-wrapper">
+          <img src="avatar.png" alt="Tviltofer" id="avatar-img" />
+        </div>
+        <div class="streamer-nick">
+          Tviltofer
+          <span class="streamer-status" id="stream-status">
+            <span class="dot"></span>
+            <span id="status-text">Загрузка...</span>
+          </span>
+        </div>
+        <div class="streamer-sub">
+          <i class="fas fa-dragon"></i>
+          Я — Тви́лтофер Rwizardser
+          <i class="fas fa-hat-wizard"></i>
+        </div>
       </div>
-      <div class="streamer-nick editable" contenteditable="false">Tviltofer</div>
-      <div class="streamer-sub editable" contenteditable="false">
-        <i class="fas fa-dragon"></i>
-        Я — Тви́лтофер Rwizardser
-        <i class="fas fa-hat-wizard"></i>
+
+      <!-- ПЛЕЕР СПРАВА -->
+      <div class="stream-player" id="stream-player">
+        <div class="offline-overlay" id="offline-overlay">
+          <i class="fas fa-broadcast-tower"></i>
+          <span>Стрим не идёт</span>
+          <span class="sub">Подпишись на Twitch!</span>
+        </div>
+        <iframe id="twitch-embed" src="" allowfullscreen></iframe>
       </div>
     </header>
 
@@ -969,7 +1120,7 @@
     </div>
 
     <!-- ============================================ -->
-    <!-- КАРТОЧКА №4: СОЦСЕТИ -->
+    <!-- КАРТОЧКА: МЕДИА & СВЯЗЬ -->
     <!-- ============================================ -->
     <div class="card tilt-card card-wide">
       <div class="card-title">
@@ -1012,15 +1163,11 @@
 
     let soundEnabled = true;
 
-    // Загружаем настройку звука из localStorage
     try {
       const saved = localStorage.getItem('tviltofer-sound');
-      if (saved === 'false') {
-        soundEnabled = false;
-      }
+      if (saved === 'false') soundEnabled = false;
     } catch (e) {}
 
-    // Обновляем кнопку при загрузке
     function updateSoundButton() {
       const btn = document.getElementById('sound-toggle');
       const tooltip = btn.querySelector('.tooltip');
@@ -1035,76 +1182,258 @@
       }
     }
 
-    // Переключение звука
     function toggleSound() {
       soundEnabled = !soundEnabled;
       localStorage.setItem('tviltofer-sound', soundEnabled);
       updateSoundButton();
-      if (soundEnabled) {
-        playSound('toggle-on');
-      }
     }
 
-    // Воспроизведение звука
     function playSound(type) {
       if (!soundEnabled) return;
 
       const sounds = {
-        'hover': 'https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8c8a8c6c8.mp3?filename=click-21190.mp3',
-        'coin': 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_2b2b2b2b.mp3?filename=coin-21189.mp3',
-        'blink': 'https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8c8a8c6c8.mp3?filename=click-21190.mp3',
-        'unlock': 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_2b2b2b2b.mp3?filename=coin-21189.mp3',
-        'toggle-on': 'https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8c8a8c6c8.mp3?filename=click-21190.mp3'
+        'hover': 'the-sound-of-a-button-in-a-computer-game.mp3',
+        'click': 'pressing-a-computer-button.mp3'
       };
 
       try {
         const audio = new Audio(sounds[type] || sounds.hover);
-        audio.volume = 0.2;
+        audio.volume = 0.25;
         audio.play().catch(() => {});
       } catch (e) {}
     }
 
-    // Обновляем кнопку при загрузке
+    // ================================================
+    // СТАТУС СТРИМА (decapi.me)
+    // ================================================
+
+    const CHANNEL = 'tviltofer';
+    let isOnline = false;
+    let statusCheckInterval = null;
+
+    async function checkStreamStatus() {
+      try {
+        const response = await fetch(`https://decapi.me/twitch/uptime/${CHANNEL}`);
+        const text = await response.text();
+
+        if (text.toLowerCase().includes('offline')) {
+          setStatus(false);
+        } else {
+          setStatus(true, text);
+        }
+      } catch (error) {
+        setStatus(false);
+      }
+    }
+
+    function setStatus(online, uptime) {
+      isOnline = online;
+      const statusEl = document.getElementById('stream-status');
+      const textEl = document.getElementById('status-text');
+      const overlay = document.getElementById('offline-overlay');
+      const iframe = document.getElementById('twitch-embed');
+
+      if (online) {
+        statusEl.className = 'streamer-status online';
+        textEl.textContent = `Онлайн · ${uptime || 'стрим идёт'}`;
+
+        // Показываем плеер
+        overlay.style.display = 'none';
+        iframe.src = `https://player.twitch.tv/?channel=${CHANNEL}&parent=${window.location.hostname}&autoplay=false`;
+
+        // Добавляем чат (опционально)
+        // Можно добавить отдельно
+
+      } else {
+        statusEl.className = 'streamer-status offline';
+        textEl.textContent = 'Офлайн';
+
+        // Скрываем плеер, показываем оверлей
+        overlay.style.display = 'flex';
+        iframe.src = '';
+      }
+    }
+
+    // ================================================
+    // АДМИН-ПАНЕЛЬ
+    // ================================================
+
+    const ADMIN_PASSWORD = 'admin123';
+    let isAdmin = false;
+
+    function loginAdmin() {
+      const password = document.getElementById('admin-password').value;
+      if (password === ADMIN_PASSWORD) {
+        isAdmin = true;
+        document.getElementById('login-modal').classList.remove('active');
+        document.getElementById('admin-panel').classList.add('active');
+        enableEditing(true);
+        playSound('click');
+        showNotification('✅ Вход выполнен!', 'success');
+      } else {
+        document.getElementById('login-error').classList.add('show');
+        document.getElementById('admin-password').value = '';
+        document.getElementById('admin-password').focus();
+      }
+    }
+
+    function logoutAdmin() {
+      isAdmin = false;
+      document.getElementById('admin-panel').classList.remove('active');
+      enableEditing(false);
+      showNotification('🔒 Выход выполнен.', 'info');
+    }
+
+    function enableEditing(enable) {
+      document.querySelectorAll('.editable').forEach(el => {
+        el.contentEditable = enable;
+        el.classList.toggle('editing', enable);
+        if (!enable) el.blur();
+      });
+    }
+
+    function saveChanges() {
+      const data = {};
+      document.querySelectorAll('.editable').forEach((el, i) => {
+        data[`editable-${i}`] = el.innerText;
+      });
+      localStorage.setItem('tviltofer-edits', JSON.stringify(data));
+      showNotification('✅ Изменения сохранены!', 'success');
+    }
+
+    function loadChanges() {
+      try {
+        const data = JSON.parse(localStorage.getItem('tviltofer-edits') || '{}');
+        document.querySelectorAll('.editable').forEach((el, i) => {
+          const key = `editable-${i}`;
+          if (data[key]) el.innerText = data[key];
+        });
+      } catch (e) {}
+    }
+
+    function showNotification(message, type) {
+      const old = document.querySelector('.admin-notification');
+      if (old) old.remove();
+
+      const notif = document.createElement('div');
+      notif.className = 'admin-notification';
+      const isSuccess = type === 'success';
+      notif.style.cssText = `
+        position: fixed; bottom: 80px; right: 20px;
+        padding: 0.8rem 1.5rem; border-radius: 12px;
+        font-size: 0.85rem; font-weight: 500; z-index: 1000;
+        background: ${isSuccess ? 'rgba(76, 175, 80, 0.15)' : 'rgba(33, 150, 243, 0.15)'};
+        border: 1px solid ${isSuccess ? '#4caf50' : '#2196f3'};
+        color: ${isSuccess ? '#81c784' : '#64b5f6'};
+        backdrop-filter: blur(12px);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        font-family: 'Inter', sans-serif;
+        animation: slideIn 0.3s ease;
+      `;
+      notif.textContent = message;
+      document.body.appendChild(notif);
+
+      setTimeout(() => {
+        notif.style.opacity = '0';
+        notif.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => notif.remove(), 400);
+      }, 3000);
+    }
+
+    // ================================================
+    // ОБРАБОТЧИКИ КЛАВИШ
+    // ================================================
+
+    document.addEventListener('keydown', function(e) {
+      // Ctrl+Alt+A — вход
+      if (e.ctrlKey && e.altKey && e.key === 'a') {
+        e.preventDefault();
+        const modal = document.getElementById('login-modal');
+        modal.classList.add('active');
+        document.getElementById('admin-password').value = '';
+        document.getElementById('login-error').classList.remove('show');
+        setTimeout(() => document.getElementById('admin-password').focus(), 100);
+      }
+
+      // Ctrl+Alt+Q — выход
+      if (e.ctrlKey && e.altKey && e.key === 'q') {
+        e.preventDefault();
+        if (isAdmin) logoutAdmin();
+      }
+
+      // Escape — закрыть модалку
+      if (e.key === 'Escape') {
+        const modal = document.getElementById('login-modal');
+        if (modal.classList.contains('active')) modal.classList.remove('active');
+      }
+
+      // Enter — войти
+      if (e.key === 'Enter') {
+        const modal = document.getElementById('login-modal');
+        if (modal.classList.contains('active')) loginAdmin();
+      }
+    });
+
+    // ================================================
+    // ЗВУКИ ПРИ НАВЕДЕНИИ
+    // ================================================
+
     document.addEventListener('DOMContentLoaded', function() {
+      // Загружаем сохранённые данные
+      loadChanges();
       updateSoundButton();
 
-      // Добавляем обработчик на кнопку
+      // Звук на кнопку звука
       document.getElementById('sound-toggle').addEventListener('click', toggleSound);
 
-      // ================================================
-      // ЗВУКИ ПРИ НАВЕДЕНИИ НА СОЦСЕТИ
-      // ================================================
-
-      // Соцсети
+      // Звук на соцсети
       document.querySelectorAll('.social-link').forEach(link => {
-        link.addEventListener('mouseenter', function() {
-          playSound('hover');
-        });
+        link.addEventListener('mouseenter', () => playSound('hover'));
       });
 
-      // Донат-ссылки
+      // Звук на донат-ссылки
       document.querySelectorAll('.donate-link').forEach(link => {
-        link.addEventListener('mouseenter', function() {
-          playSound('coin');
-        });
+        link.addEventListener('mouseenter', () => playSound('hover'));
       });
 
-      // Аватарка (двойной клик для входа)
-      const avatar = document.getElementById('avatar-img');
-      if (avatar) {
-        avatar.addEventListener('dblclick', function() {
-          const modal = document.getElementById('login-modal');
-          modal.classList.add('active');
-          document.getElementById('admin-password').value = '';
-          document.getElementById('login-error').classList.remove('show');
-          setTimeout(() => document.getElementById('admin-password').focus(), 100);
-          playSound('unlock');
+      // Звук на кнопки в админке
+      document.querySelectorAll('.admin-btn').forEach(btn => {
+        btn.addEventListener('click', () => playSound('click'));
+      });
+
+      // Проверяем статус стрима
+      checkStreamStatus();
+      statusCheckInterval = setInterval(checkStreamStatus, 30000); // каждые 30 секунд
+
+      // 3D-эффект для карточек
+      if (typeof VanillaTilt !== 'undefined') {
+        VanillaTilt.init(document.querySelectorAll('.tilt-card'), {
+          max: 6,
+          speed: 600,
+          perspective: 1200,
+          easing: 'cubic-bezier(.25,.46,.45,.94)',
+          glare: true,
+          'max-glare': 0.15,
+          scale: 1.02,
+          'reset-to-start': true,
+          gyroscope: true
         });
       }
 
+      // Плавное появление
+      document.querySelectorAll('.card').forEach((card, i) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+        setTimeout(() => {
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }, 100 + i * 100);
+      });
+
       console.log('🐉 Инфо-хаб Tviltofer загружен!');
-      console.log('🔑 Нажми Ctrl+Alt+A или дважды кликни по аватарке для входа в админ-панель');
-      console.log('🔊 Кнопка звука слева снизу');
+      console.log('🔑 Нажми Ctrl+Alt+A для входа в админ-панель');
+      console.log('📺 Статус стрима обновляется каждые 30 секунд');
     });
   </script>
 
