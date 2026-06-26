@@ -91,6 +91,70 @@
       z-index: 1;
     }
 
+    /* ===== КНОПКА ЗВУКА (СЛЕВА СНИЗУ) ===== */
+    #sound-toggle {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      z-index: 1000;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 2px solid var(--border-color);
+      background: rgba(17, 13, 31, 0.85);
+      backdrop-filter: blur(12px);
+      color: var(--text-secondary);
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      user-select: none;
+    }
+
+    #sound-toggle:hover {
+      border-color: var(--accent);
+      transform: scale(1.08);
+      box-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
+    }
+
+    #sound-toggle:active {
+      transform: scale(0.92);
+    }
+
+    #sound-toggle .tooltip {
+      position: absolute;
+      left: 60px;
+      background: rgba(17, 13, 31, 0.95);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.3rem 0.8rem;
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      font-family: 'Inter', sans-serif;
+    }
+
+    #sound-toggle:hover .tooltip {
+      opacity: 1;
+    }
+
+    #sound-toggle.sound-off {
+      border-color: rgba(244, 67, 54, 0.3);
+      color: #ef5350;
+    }
+
+    #sound-toggle.sound-off:hover {
+      border-color: rgba(244, 67, 54, 0.6);
+      box-shadow: 0 0 30px rgba(244, 67, 54, 0.15);
+    }
+
     /* ===== АДМИН-ПАНЕЛЬ ===== */
     #admin-panel {
       position: fixed;
@@ -756,6 +820,14 @@
         padding: 1rem;
         min-width: 160px;
       }
+
+      #sound-toggle {
+        bottom: 20px;
+        left: 20px;
+        width: 44px;
+        height: 44px;
+        font-size: 1.2rem;
+      }
     }
   </style>
 </head>
@@ -766,6 +838,12 @@
 
   <!-- ===== СВЕЧЕНИЕ ЗА КУРСОРОМ ===== -->
   <div id="cursor-glow"></div>
+
+  <!-- ===== КНОПКА ЗВУКА (СЛЕВА СНИЗУ) ===== -->
+  <button id="sound-toggle" title="Включить/выключить звук">
+    🔊
+    <span class="tooltip">Звук включён</span>
+  </button>
 
   <!-- ===== МОДАЛЬНОЕ ОКНО ВХОДА ===== -->
   <div id="login-modal">
@@ -797,7 +875,7 @@
     <!-- ============================================ -->
     <header class="hub-header">
       <div class="avatar-wrapper">
-        <img src="avatar.png" alt="Tviltofer" />
+        <img src="avatar.png" alt="Tviltofer" id="avatar-img" />
       </div>
       <div class="streamer-nick editable" contenteditable="false">Tviltofer</div>
       <div class="streamer-sub editable" contenteditable="false">
@@ -929,355 +1007,105 @@
 
   <script>
     // ================================================
-    // АДМИН-ПАНЕЛЬ (ГЛОБАЛЬНЫЕ ФУНКЦИИ)
+    // ЗВУКОВАЯ СИСТЕМА
     // ================================================
 
-    const ADMIN_PASSWORD = 'admin123';
-    let isAdmin = false;
+    let soundEnabled = true;
 
-    function loginAdmin() {
-      const password = document.getElementById('admin-password').value;
-      if (password === ADMIN_PASSWORD) {
-        isAdmin = true;
-        document.getElementById('login-modal').classList.remove('active');
-        document.getElementById('admin-panel').classList.add('active');
-        enableEditing(true);
-        showNotification('✅ Вход выполнен! Режим редактирования активирован.', 'success');
+    // Загружаем настройку звука из localStorage
+    try {
+      const saved = localStorage.getItem('tviltofer-sound');
+      if (saved === 'false') {
+        soundEnabled = false;
+      }
+    } catch (e) {}
+
+    // Обновляем кнопку при загрузке
+    function updateSoundButton() {
+      const btn = document.getElementById('sound-toggle');
+      const tooltip = btn.querySelector('.tooltip');
+      if (soundEnabled) {
+        btn.textContent = '🔊';
+        btn.classList.remove('sound-off');
+        if (tooltip) tooltip.textContent = 'Звук включён';
       } else {
-        document.getElementById('login-error').classList.add('show');
-        document.getElementById('admin-password').value = '';
-        document.getElementById('admin-password').focus();
+        btn.textContent = '🔇';
+        btn.classList.add('sound-off');
+        if (tooltip) tooltip.textContent = 'Звук выключен';
       }
     }
 
-    function logoutAdmin() {
-      isAdmin = false;
-      document.getElementById('admin-panel').classList.remove('active');
-      enableEditing(false);
-      showNotification('🔒 Выход выполнен. Режим редактирования отключён.', 'info');
-    }
-
-    function enableEditing(enable) {
-      const elements = document.querySelectorAll('.editable');
-      elements.forEach(el => {
-        el.contentEditable = enable;
-        if (enable) {
-          el.classList.add('editing');
-        } else {
-          el.classList.remove('editing');
-          el.blur();
-        }
-      });
-    }
-
-    function saveChanges() {
-      const data = {};
-      document.querySelectorAll('.editable').forEach((el, index) => {
-        data[`editable-${index}`] = el.innerText;
-      });
-      localStorage.setItem('tviltofer-edits', JSON.stringify(data));
-      showNotification('✅ Изменения сохранены!', 'success');
-    }
-
-    function loadChanges() {
-      const saved = localStorage.getItem('tviltofer-edits');
-      if (saved) {
-        try {
-          const data = JSON.parse(saved);
-          document.querySelectorAll('.editable').forEach((el, index) => {
-            const key = `editable-${index}`;
-            if (data[key] && data[key] !== el.innerText) {
-              el.innerText = data[key];
-            }
-          });
-        } catch (e) {
-          console.log('Ошибка загрузки данных');
-        }
+    // Переключение звука
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      localStorage.setItem('tviltofer-sound', soundEnabled);
+      updateSoundButton();
+      if (soundEnabled) {
+        playSound('toggle-on');
       }
     }
 
-    function showNotification(message, type) {
-      const old = document.querySelector('.admin-notification');
-      if (old) old.remove();
+    // Воспроизведение звука
+    function playSound(type) {
+      if (!soundEnabled) return;
 
-      const notif = document.createElement('div');
-      notif.className = 'admin-notification';
-      notif.style.cssText = `
-        position: fixed;
-        bottom: 80px;
-        right: 20px;
-        padding: 0.8rem 1.5rem;
-        border-radius: 12px;
-        font-size: 0.85rem;
-        font-weight: 500;
-        z-index: 1000;
-        background: ${type === 'success' ? 'rgba(76, 175, 80, 0.15)' : 'rgba(33, 150, 243, 0.15)'};
-        border: 1px solid ${type === 'success' ? '#4caf50' : '#2196f3'};
-        color: ${type === 'success' ? '#81c784' : '#64b5f6'};
-        backdrop-filter: blur(12px);
-        box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-        animation: slideIn 0.3s ease;
-        font-family: 'Inter', sans-serif;
-      `;
-      notif.textContent = message;
+      const sounds = {
+        'hover': 'https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8c8a8c6c8.mp3?filename=click-21190.mp3',
+        'coin': 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_2b2b2b2b.mp3?filename=coin-21189.mp3',
+        'blink': 'https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8c8a8c6c8.mp3?filename=click-21190.mp3',
+        'unlock': 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_2b2b2b2b.mp3?filename=coin-21189.mp3',
+        'toggle-on': 'https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8c8a8c6c8.mp3?filename=click-21190.mp3'
+      };
 
-      const style = document.createElement('style');
-      style.textContent = `
-        @keyframes slideIn {
-          from { opacity: 0; transform: translateX(30px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-      `;
-      document.head.appendChild(style);
-
-      document.body.appendChild(notif);
-      setTimeout(() => {
-        notif.style.opacity = '0';
-        notif.style.transition = 'opacity 0.3s ease';
-        setTimeout(() => notif.remove(), 400);
-      }, 3000);
+      try {
+        const audio = new Audio(sounds[type] || sounds.hover);
+        audio.volume = 0.2;
+        audio.play().catch(() => {});
+      } catch (e) {}
     }
 
-    // ================================================
-    // ОБРАБОТЧИКИ КЛАВИШ (ГЛОБАЛЬНЫЕ)
-    // ================================================
-
-    document.addEventListener('keydown', function(e) {
-      // Ctrl + Alt + A — открыть окно входа
-      if (e.ctrlKey && e.altKey && e.key === 'a') {
-        e.preventDefault();
-        const modal = document.getElementById('login-modal');
-        if (modal) {
-          modal.classList.add('active');
-          const input = document.getElementById('admin-password');
-          if (input) {
-            input.value = '';
-            document.getElementById('login-error').classList.remove('show');
-            setTimeout(() => input.focus(), 100);
-          }
-        }
-      }
-
-      // Ctrl + Alt + Q — выход из админ-панели
-      if (e.ctrlKey && e.altKey && e.key === 'q') {
-        e.preventDefault();
-        if (isAdmin) {
-          logoutAdmin();
-        }
-      }
-
-      // Escape — закрыть модалку
-      if (e.key === 'Escape') {
-        const modal = document.getElementById('login-modal');
-        if (modal && modal.classList.contains('active')) {
-          modal.classList.remove('active');
-        }
-      }
-
-      // Enter — вход в модалке
-      if (e.key === 'Enter') {
-        const modal = document.getElementById('login-modal');
-        if (modal && modal.classList.contains('active')) {
-          loginAdmin();
-        }
-      }
-    });
-
-    // ================================================
-    // 3D ЭФФЕКТ ДЛЯ КАРТОЧЕК (Vanilla Tilt)
-    // ================================================
-
+    // Обновляем кнопку при загрузке
     document.addEventListener('DOMContentLoaded', function() {
+      updateSoundButton();
 
-      // Загружаем сохранённые данные
-      loadChanges();
+      // Добавляем обработчик на кнопку
+      document.getElementById('sound-toggle').addEventListener('click', toggleSound);
 
-      const tiltElements = document.querySelectorAll('.tilt-card');
+      // ================================================
+      // ЗВУКИ ПРИ НАВЕДЕНИИ НА СОЦСЕТИ
+      // ================================================
 
-      if (tiltElements.length > 0 && typeof VanillaTilt !== 'undefined') {
-        VanillaTilt.init(tiltElements, {
-          max: 6,
-          speed: 600,
-          perspective: 1200,
-          easing: 'cubic-bezier(.25,.46,.45,.94)',
-          glare: true,
-          'max-glare': 0.15,
-          scale: 1.02,
-          'reset-to-start': true,
-          gyroscope: true,
-          gyroscopeMinAngleX: -30,
-          gyroscopeMaxAngleX: 30,
-          gyroscopeMinAngleY: -30,
-          gyroscopeMaxAngleY: 30
+      // Соцсети
+      document.querySelectorAll('.social-link').forEach(link => {
+        link.addEventListener('mouseenter', function() {
+          playSound('hover');
+        });
+      });
+
+      // Донат-ссылки
+      document.querySelectorAll('.donate-link').forEach(link => {
+        link.addEventListener('mouseenter', function() {
+          playSound('coin');
+        });
+      });
+
+      // Аватарка (двойной клик для входа)
+      const avatar = document.getElementById('avatar-img');
+      if (avatar) {
+        avatar.addEventListener('dblclick', function() {
+          const modal = document.getElementById('login-modal');
+          modal.classList.add('active');
+          document.getElementById('admin-password').value = '';
+          document.getElementById('login-error').classList.remove('show');
+          setTimeout(() => document.getElementById('admin-password').focus(), 100);
+          playSound('unlock');
         });
       }
-
-      // Плавное появление карточек
-      const cards = document.querySelectorAll('.card');
-      cards.forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(30px)';
-        card.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
-
-        setTimeout(() => {
-          card.style.opacity = '1';
-          card.style.transform = 'translateY(0)';
-        }, 100 + index * 100);
-      });
 
       console.log('🐉 Инфо-хаб Tviltofer загружен!');
-      console.log('🔑 Нажми Ctrl+Alt+A для входа в админ-панель');
+      console.log('🔑 Нажми Ctrl+Alt+A или дважды кликни по аватарке для входа в админ-панель');
+      console.log('🔊 Кнопка звука слева снизу');
     });
-
-    // ================================================
-    // ИНТЕРАКТИВНЫЙ ЗВЁЗДНЫЙ ФОН
-    // ================================================
-
-    (function() {
-      const canvas = document.getElementById('stars-canvas');
-      const ctx = canvas.getContext('2d');
-      const glow = document.getElementById('cursor-glow');
-
-      let width, height;
-      let stars = [];
-      let mouseX = -1000;
-      let mouseY = -1000;
-      let targetX = -1000;
-      let targetY = -1000;
-      const STAR_COUNT = 200;
-
-      function resize() {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-      }
-
-      function createStars() {
-        stars = [];
-        for (let i = 0; i < STAR_COUNT; i++) {
-          stars.push({
-            x: Math.random() * width,
-            y: Math.random() * height,
-            radius: Math.random() * 2.2 + 0.5,
-            speed: Math.random() * 0.4 + 0.05,
-            opacity: Math.random() * 0.8 + 0.2,
-            phase: Math.random() * Math.PI * 2,
-            baseX: Math.random() * width,
-            baseY: Math.random() * height,
-            color: Math.random() > 0.55 ? 'gold' : 'purple',
-            parallaxFactor: Math.random() * 0.3 + 0.05
-          });
-        }
-      }
-
-      document.addEventListener('mousemove', function(e) {
-        targetX = e.clientX;
-        targetY = e.clientY;
-        glow.classList.add('active');
-        glow.style.left = e.clientX + 'px';
-        glow.style.top = e.clientY + 'px';
-      });
-
-      document.addEventListener('mouseleave', function() {
-        glow.classList.remove('active');
-        targetX = -1000;
-        targetY = -1000;
-      });
-
-      function drawStars(time) {
-        mouseX += (targetX - mouseX) * 0.08;
-        mouseY += (targetY - mouseY) * 0.08;
-
-        const offsetX = (mouseX - width / 2) * 0.002;
-        const offsetY = (mouseY - height / 2) * 0.002;
-
-        ctx.clearRect(0, 0, width, height);
-
-        const pulse = Math.sin(time * 0.0003) * 0.005 + 0.01;
-
-        const grad1 = ctx.createRadialGradient(
-          width * 0.3 + offsetX * 20, height * 0.4 + offsetY * 20, 0,
-          width * 0.3 + offsetX * 20, height * 0.4 + offsetY * 20, Math.max(width, height) * 0.5
-        );
-        grad1.addColorStop(0, `rgba(139, 92, 246, ${0.03 + pulse})`);
-        grad1.addColorStop(1, 'rgba(0, 0, 0, 0)');
-        ctx.fillStyle = grad1;
-        ctx.fillRect(0, 0, width, height);
-
-        const grad2 = ctx.createRadialGradient(
-          width * 0.7 + offsetX * 15, height * 0.3 + offsetY * 15, 0,
-          width * 0.7 + offsetX * 15, height * 0.3 + offsetY * 15, Math.max(width, height) * 0.4
-        );
-        grad2.addColorStop(0, `rgba(243, 156, 18, ${0.02 + pulse * 0.5})`);
-        grad2.addColorStop(1, 'rgba(0, 0, 0, 0)');
-        ctx.fillStyle = grad2;
-        ctx.fillRect(0, 0, width, height);
-
-        stars.forEach(star => {
-          const twinkle = Math.sin(time * 0.001 * star.speed + star.phase) * 0.3 + 0.7;
-          const opacity = star.opacity * twinkle;
-
-          const px = star.baseX + offsetX * star.parallaxFactor * 80;
-          const py = star.baseY + offsetY * star.parallaxFactor * 80;
-
-          let r, g, b;
-          if (star.color === 'gold') {
-            r = 243;
-            g = 156 + Math.sin(time * 0.0008 + star.phase) * 25;
-            b = 18;
-          } else {
-            r = 139 + Math.sin(time * 0.001 + star.phase) * 35;
-            g = 92 + Math.sin(time * 0.0012 + star.phase) * 25;
-            b = 246;
-          }
-
-          ctx.beginPath();
-          ctx.arc(px, py, star.radius * twinkle, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${opacity * 0.85})`;
-          ctx.fill();
-
-          if (star.radius > 1.2) {
-            ctx.beginPath();
-            ctx.arc(px, py, star.radius * 4 * twinkle, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${opacity * 0.07})`;
-            ctx.fill();
-          }
-        });
-
-        if (mouseX > 0 && mouseY > 0) {
-          const trailLength = 60;
-          for (let i = 0; i < trailLength; i++) {
-            const progress = i / trailLength;
-            const alpha = 0.03 * (1 - progress);
-            const radius = 2 * (1 - progress) + 0.5;
-            const x = mouseX - (mouseX - mouseX) * progress;
-            const y = mouseY - (mouseY - mouseY) * progress;
-            ctx.beginPath();
-            ctx.arc(x, y, radius, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(139, 92, 246, ${alpha})`;
-            ctx.fill();
-          }
-        }
-
-        requestAnimationFrame(drawStars);
-      }
-
-      function initStars() {
-        resize();
-        createStars();
-        drawStars(0);
-      }
-
-      window.addEventListener('resize', () => {
-        resize();
-        createStars();
-      });
-
-      setTimeout(() => {
-        glow.style.transition = 'opacity 0.5s ease';
-      }, 100);
-
-      initStars();
-    })();
   </script>
 
 </body>
