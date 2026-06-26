@@ -898,13 +898,13 @@
         <i class="fas fa-link"></i> <span class="editable" contenteditable="false">Медиа &amp; Связь</span>
       </div>
 
-      <div class="social-grid">
-        <a href="https://www.twitch.tv/tviltofer" target="_blank" class="social-link"><i class="fab fa-twitch"></i> Twitch</a>
-        <a href="https://discord.com/invite/ZjJED3ZFna" target="_blank" class="social-link"><i class="fab fa-discord"></i> Discord</a>
-        <a href="https://t.me/Tviltofer" target="_blank" class="social-link"><i class="fab fa-telegram"></i> Telegram</a>
-        <a href="https://boosty.to/tviltofer" target="_blank" class="social-link"><i class="fas fa-crown"></i> Boosty</a>
-        <a href="https://x.com/tviltofer" target="_blank" class="social-link"><i class="fab fa-twitter"></i> Twitter</a>
-        <a href="https://vk.com/tviltofervtuber" target="_blank" class="social-link"><i class="fab fa-vk"></i> ВКонтакте</a>
+      <div class="social-grid" id="social-grid">
+        <a href="https://www.twitch.tv/tviltofer" target="_blank" class="social-link" data-social="twitch"><i class="fab fa-twitch"></i> Twitch</a>
+        <a href="https://discord.com/invite/ZjJED3ZFna" target="_blank" class="social-link" data-social="discord"><i class="fab fa-discord"></i> Discord</a>
+        <a href="https://t.me/Tviltofer" target="_blank" class="social-link" data-social="telegram"><i class="fab fa-telegram"></i> Telegram</a>
+        <a href="https://boosty.to/tviltofer" target="_blank" class="social-link" data-social="boosty"><i class="fas fa-crown"></i> Boosty</a>
+        <a href="https://x.com/tviltofer" target="_blank" class="social-link" data-social="twitter"><i class="fab fa-twitter"></i> Twitter</a>
+        <a href="https://vk.com/tviltofervtuber" target="_blank" class="social-link" data-social="vk"><i class="fab fa-vk"></i> ВКонтакте</a>
       </div>
 
       <div class="donate-links">
@@ -929,71 +929,11 @@
 
   <script>
     // ================================================
-    // 3D ЭФФЕКТ ДЛЯ КАРТОЧЕК (Vanilla Tilt)
-    // ================================================
-
-    document.addEventListener('DOMContentLoaded', function() {
-
-      const tiltElements = document.querySelectorAll('.tilt-card');
-
-      if (tiltElements.length > 0 && typeof VanillaTilt !== 'undefined') {
-        VanillaTilt.init(tiltElements, {
-          max: 6,
-          speed: 600,
-          perspective: 1200,
-          easing: 'cubic-bezier(.25,.46,.45,.94)',
-          glare: true,
-          'max-glare': 0.15,
-          scale: 1.02,
-          'reset-to-start': true,
-          gyroscope: true,
-          gyroscopeMinAngleX: -30,
-          gyroscopeMaxAngleX: 30,
-          gyroscopeMinAngleY: -30,
-          gyroscopeMaxAngleY: 30
-        });
-      }
-
-      // Плавное появление карточек
-      const cards = document.querySelectorAll('.card');
-      cards.forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(30px)';
-        card.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
-
-        setTimeout(() => {
-          card.style.opacity = '1';
-          card.style.transform = 'translateY(0)';
-        }, 100 + index * 100);
-      });
-
-      // Загружаем сохранённые данные
-      loadChanges();
-
-      console.log('🐉 Инфо-хаб Tviltofer загружен!');
-    });
-
-    // ================================================
-    // АДМИН-ПАНЕЛЬ
+    // АДМИН-ПАНЕЛЬ (ГЛОБАЛЬНЫЕ ФУНКЦИИ)
     // ================================================
 
     const ADMIN_PASSWORD = 'admin123';
     let isAdmin = false;
-
-    // Открыть окно входа по Ctrl+Alt+A
-    document.addEventListener('keydown', function(e) {
-      if (e.ctrlKey && e.altKey && e.key === 'a') {
-        e.preventDefault();
-        document.getElementById('login-modal').classList.add('active');
-        document.getElementById('admin-password').value = '';
-        document.getElementById('login-error').classList.remove('show');
-        document.getElementById('admin-password').focus();
-      }
-      if (e.ctrlKey && e.altKey && e.key === 'q' && isAdmin) {
-        e.preventDefault();
-        logoutAdmin();
-      }
-    });
 
     function loginAdmin() {
       const password = document.getElementById('admin-password').value;
@@ -1030,7 +970,6 @@
       });
     }
 
-    // Сохранение изменений
     function saveChanges() {
       const data = {};
       document.querySelectorAll('.editable').forEach((el, index) => {
@@ -1056,10 +995,6 @@
         }
       }
     }
-
-    // ================================================
-    // СИСТЕМА УВЕДОМЛЕНИЙ
-    // ================================================
 
     function showNotification(message, type) {
       const old = document.querySelector('.admin-notification');
@@ -1102,6 +1037,97 @@
         setTimeout(() => notif.remove(), 400);
       }, 3000);
     }
+
+    // ================================================
+    // ОБРАБОТЧИКИ КЛАВИШ (ГЛОБАЛЬНЫЕ)
+    // ================================================
+
+    document.addEventListener('keydown', function(e) {
+      // Ctrl + Alt + A — открыть окно входа
+      if (e.ctrlKey && e.altKey && e.key === 'a') {
+        e.preventDefault();
+        const modal = document.getElementById('login-modal');
+        if (modal) {
+          modal.classList.add('active');
+          const input = document.getElementById('admin-password');
+          if (input) {
+            input.value = '';
+            document.getElementById('login-error').classList.remove('show');
+            setTimeout(() => input.focus(), 100);
+          }
+        }
+      }
+
+      // Ctrl + Alt + Q — выход из админ-панели
+      if (e.ctrlKey && e.altKey && e.key === 'q') {
+        e.preventDefault();
+        if (isAdmin) {
+          logoutAdmin();
+        }
+      }
+
+      // Escape — закрыть модалку
+      if (e.key === 'Escape') {
+        const modal = document.getElementById('login-modal');
+        if (modal && modal.classList.contains('active')) {
+          modal.classList.remove('active');
+        }
+      }
+
+      // Enter — вход в модалке
+      if (e.key === 'Enter') {
+        const modal = document.getElementById('login-modal');
+        if (modal && modal.classList.contains('active')) {
+          loginAdmin();
+        }
+      }
+    });
+
+    // ================================================
+    // 3D ЭФФЕКТ ДЛЯ КАРТОЧЕК (Vanilla Tilt)
+    // ================================================
+
+    document.addEventListener('DOMContentLoaded', function() {
+
+      // Загружаем сохранённые данные
+      loadChanges();
+
+      const tiltElements = document.querySelectorAll('.tilt-card');
+
+      if (tiltElements.length > 0 && typeof VanillaTilt !== 'undefined') {
+        VanillaTilt.init(tiltElements, {
+          max: 6,
+          speed: 600,
+          perspective: 1200,
+          easing: 'cubic-bezier(.25,.46,.45,.94)',
+          glare: true,
+          'max-glare': 0.15,
+          scale: 1.02,
+          'reset-to-start': true,
+          gyroscope: true,
+          gyroscopeMinAngleX: -30,
+          gyroscopeMaxAngleX: 30,
+          gyroscopeMinAngleY: -30,
+          gyroscopeMaxAngleY: 30
+        });
+      }
+
+      // Плавное появление карточек
+      const cards = document.querySelectorAll('.card');
+      cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+
+        setTimeout(() => {
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }, 100 + index * 100);
+      });
+
+      console.log('🐉 Инфо-хаб Tviltofer загружен!');
+      console.log('🔑 Нажми Ctrl+Alt+A для входа в админ-панель');
+    });
 
     // ================================================
     // ИНТЕРАКТИВНЫЙ ЗВЁЗДНЫЙ ФОН
