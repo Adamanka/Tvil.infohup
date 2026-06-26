@@ -1407,49 +1407,51 @@
   </div>
 
   <script>
-    // ============================================================
-    // ЗВУК
-    // ============================================================
+// ================================================
+// ЗВУКОВАЯ СИСТЕМА 
+// ================================================
 
-    let soundEnabled = true;
+let soundEnabled = true;
 
-    try {
-      const saved = localStorage.getItem('tviltofer-sound');
-      if (saved === 'false') soundEnabled = false;
-    } catch (e) {}
+try {
+    const saved = localStorage.getItem('tviltofer-sound');
+    if (saved === 'false') soundEnabled = false;
+} catch (e) {}
 
-    function updateSoundButton() {
-      const btn = document.getElementById('sound-toggle');
-      const tooltip = btn.querySelector('.tooltip');
-      if (soundEnabled) {
+function updateSoundButton() {
+    const btn = document.getElementById('sound-toggle');
+    const tooltip = btn.querySelector('.tooltip');
+    if (soundEnabled) {
         btn.textContent = '🔊';
         btn.classList.remove('sound-off');
         if (tooltip) tooltip.textContent = 'Звук включён';
-      } else {
+    } else {
         btn.textContent = '🔇';
         btn.classList.add('sound-off');
         if (tooltip) tooltip.textContent = 'Звук выключен';
-      }
     }
+}
 
-    function toggleSound() {
-      soundEnabled = !soundEnabled;
-      localStorage.setItem('tviltofer-sound', soundEnabled);
-      updateSoundButton();
-    }
+function toggleSound() {
+    soundEnabled = !soundEnabled;
+    localStorage.setItem('tviltofer-sound', soundEnabled);
+    updateSoundButton();
+}
 
-    function playSound(type) {
-      if (!soundEnabled) return;
-      const sounds = {
-        'hover': 'sounds/the-sound-of-a-button-in-a-computer-game.mp3',
-        'click': 'sounds/pressing-a-computer-button.mp3'
-      };
-      try {
+function playSound(type) {
+    if (!soundEnabled) return;
+
+    const sounds = {
+        'hover': 'the-sound-of-a-button-in-a-computer-game.mp3',
+        'click': 'pressing-a-computer-button.mp3'
+    };
+
+    try {
         const audio = new Audio(sounds[type] || sounds.hover);
         audio.volume = 0.25;
         audio.play().catch(() => {});
-      } catch (e) {}
-    }
+    } catch (e) {}
+}
 
     // ============================================================
     // СТАТУС СТРИМА
