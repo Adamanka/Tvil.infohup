@@ -48,6 +48,7 @@
       cursor: default;
     }
 
+    /* ===== ЗВЁЗДНЫЙ ФОН ===== */
     #stars-canvas {
       position: fixed;
       top: 0;
@@ -58,6 +59,7 @@
       pointer-events: none;
     }
 
+    /* ===== СВЕЧЕНИЕ ЗА КУРСОРОМ ===== */
     #cursor-glow {
       position: fixed;
       pointer-events: none;
@@ -548,7 +550,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 1.8rem;
-      margin-bottom: 2.5rem;
+      margin-bottom: 3.5rem;
     }
 
     /* ===== КАРТОЧКИ ===== */
@@ -579,9 +581,9 @@
       text-transform: uppercase;
       letter-spacing: 2px;
       color: var(--text-muted);
-      margin-bottom: 1.2rem;
+      margin-bottom: 1rem;
       border-bottom: 1px solid #1f1735;
-      padding-bottom: 0.7rem;
+      padding-bottom: 0.6rem;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -720,25 +722,25 @@
       color: var(--text-muted);
     }
 
-    /* ===== СОЦСЕТИ ===== */
+    /* ===== МЕДИА & СВЯЗЬ (КОМПАКТНЫЙ) ===== */
     .social-grid {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.4rem 0.8rem;
+      gap: 0.3rem 0.6rem;
     }
 
     .social-link {
       color: var(--text-secondary);
       text-decoration: none;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 0.4rem 0.9rem;
-      border-radius: 10px;
+      gap: 6px;
+      padding: 0.3rem 0.7rem;
+      border-radius: 8px;
       transition: 0.25s;
       position: relative;
-      background: rgba(17, 13, 31, 0.5);
+      background: rgba(17, 13, 31, 0.4);
       border: 1px solid transparent;
     }
 
@@ -746,7 +748,7 @@
       content: '';
       position: absolute;
       inset: -1px;
-      border-radius: 10px;
+      border-radius: 8px;
       background: linear-gradient(135deg, var(--accent), var(--gold), var(--accent));
       background-size: 200% 200%;
       opacity: 0;
@@ -780,8 +782,8 @@
     }
 
     .social-link i {
-      font-size: 1.2rem;
-      width: 22px;
+      font-size: 1.1rem;
+      width: 20px;
       color: var(--accent-light);
       transition: 0.25s;
     }
@@ -791,23 +793,23 @@
       filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.5));
     }
 
-    /* ===== ДОНАТ-ССЫЛКИ ===== */
+    /* ===== ДОНАТ-ССЫЛКИ (КОМПАКТНЫЕ) ===== */
     .donate-links {
-      margin-top: 1rem;
+      margin-top: 0.8rem;
       display: flex;
       flex-wrap: wrap;
-      gap: 1rem;
-      padding-top: 0.8rem;
+      gap: 0.6rem;
+      padding-top: 0.6rem;
       border-top: 1px solid #1f1735;
     }
 
     .donate-link {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 0.5rem 1.2rem;
-      border-radius: 12px;
-      font-size: 0.85rem;
+      gap: 6px;
+      padding: 0.3rem 0.9rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
       font-weight: 600;
       text-decoration: none;
       color: var(--text-primary);
@@ -824,13 +826,13 @@
     }
 
     .donate-link i {
-      font-size: 1.1rem;
+      font-size: 1rem;
       color: var(--gold);
     }
 
     /* ===== ФУТЕР ===== */
     .footer {
-      margin-top: 2.5rem;
+      margin-top: 3rem;
       font-size: 0.7rem;
       color: #3a2d52;
       text-align: center;
@@ -908,6 +910,8 @@
 
       .grid {
         grid-template-columns: 1fr;
+        gap: 1.2rem;
+        margin-bottom: 2rem;
       }
 
       .streamer-nick {
@@ -923,13 +927,9 @@
         height: 100px;
       }
 
-      .social-grid {
-        gap: 0.3rem 0.5rem;
-      }
-
       .social-link {
-        font-size: 0.85rem;
-        padding: 0.3rem 0.7rem;
+        font-size: 0.8rem;
+        padding: 0.2rem 0.5rem;
       }
 
       .donate-links {
@@ -1120,7 +1120,7 @@
     </div>
 
     <!-- ============================================ -->
-    <!-- КАРТОЧКА: МЕДИА & СВЯЗЬ -->
+    <!-- КАРТОЧКА: МЕДИА & СВЯЗЬ (КОМПАКТНАЯ) -->
     <!-- ============================================ -->
     <div class="card tilt-card card-wide">
       <div class="card-title">
@@ -1192,8 +1192,8 @@
       if (!soundEnabled) return;
 
       const sounds = {
-        'hover': 'the-sound-of-a-button-in-a-computer-game.mp3',
-        'click': 'pressing-a-computer-button.mp3'
+        'hover': 'sounds/the-sound-of-a-button-in-a-computer-game.mp3',
+        'click': 'sounds/pressing-a-computer-button.mp3'
       };
 
       try {
@@ -1237,18 +1237,12 @@
         statusEl.className = 'streamer-status online';
         textEl.textContent = `Онлайн · ${uptime || 'стрим идёт'}`;
 
-        // Показываем плеер
         overlay.style.display = 'none';
         iframe.src = `https://player.twitch.tv/?channel=${CHANNEL}&parent=${window.location.hostname}&autoplay=false`;
-
-        // Добавляем чат (опционально)
-        // Можно добавить отдельно
-
       } else {
         statusEl.className = 'streamer-status offline';
         textEl.textContent = 'Офлайн';
 
-        // Скрываем плеер, показываем оверлей
         overlay.style.display = 'flex';
         iframe.src = '';
       }
@@ -1341,11 +1335,160 @@
     }
 
     // ================================================
+    // ЗВЁЗДНЫЙ ФОН
+    // ================================================
+
+    (function() {
+      const canvas = document.getElementById('stars-canvas');
+      const ctx = canvas.getContext('2d');
+      const glow = document.getElementById('cursor-glow');
+
+      let width, height;
+      let stars = [];
+      let mouseX = -1000,
+        mouseY = -1000;
+      let targetX = -1000,
+        targetY = -1000;
+      const STAR_COUNT = 200;
+
+      function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+
+      function createStars() {
+        stars = [];
+        for (let i = 0; i < STAR_COUNT; i++) {
+          stars.push({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            radius: Math.random() * 2.2 + 0.5,
+            speed: Math.random() * 0.4 + 0.05,
+            opacity: Math.random() * 0.8 + 0.2,
+            phase: Math.random() * Math.PI * 2,
+            baseX: Math.random() * width,
+            baseY: Math.random() * height,
+            color: Math.random() > 0.55 ? 'gold' : 'purple',
+            parallaxFactor: Math.random() * 0.3 + 0.05
+          });
+        }
+      }
+
+      document.addEventListener('mousemove', function(e) {
+        targetX = e.clientX;
+        targetY = e.clientY;
+        glow.classList.add('active');
+        glow.style.left = e.clientX + 'px';
+        glow.style.top = e.clientY + 'px';
+      });
+
+      document.addEventListener('mouseleave', function() {
+        glow.classList.remove('active');
+        targetX = -1000;
+        targetY = -1000;
+      });
+
+      function drawStars(time) {
+        mouseX += (targetX - mouseX) * 0.08;
+        mouseY += (targetY - mouseY) * 0.08;
+
+        const offsetX = (mouseX - width / 2) * 0.002;
+        const offsetY = (mouseY - height / 2) * 0.002;
+
+        ctx.clearRect(0, 0, width, height);
+
+        const pulse = Math.sin(time * 0.0003) * 0.005 + 0.01;
+
+        const grad1 = ctx.createRadialGradient(
+          width * 0.3 + offsetX * 20, height * 0.4 + offsetY * 20, 0,
+          width * 0.3 + offsetX * 20, height * 0.4 + offsetY * 20, Math.max(width, height) * 0.5
+        );
+        grad1.addColorStop(0, `rgba(139, 92, 246, ${0.03 + pulse})`);
+        grad1.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = grad1;
+        ctx.fillRect(0, 0, width, height);
+
+        const grad2 = ctx.createRadialGradient(
+          width * 0.7 + offsetX * 15, height * 0.3 + offsetY * 15, 0,
+          width * 0.7 + offsetX * 15, height * 0.3 + offsetY * 15, Math.max(width, height) * 0.4
+        );
+        grad2.addColorStop(0, `rgba(243, 156, 18, ${0.02 + pulse * 0.5})`);
+        grad2.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = grad2;
+        ctx.fillRect(0, 0, width, height);
+
+        stars.forEach(star => {
+          const twinkle = Math.sin(time * 0.001 * star.speed + star.phase) * 0.3 + 0.7;
+          const opacity = star.opacity * twinkle;
+
+          const px = star.baseX + offsetX * star.parallaxFactor * 80;
+          const py = star.baseY + offsetY * star.parallaxFactor * 80;
+
+          let r, g, b;
+          if (star.color === 'gold') {
+            r = 243;
+            g = 156 + Math.sin(time * 0.0008 + star.phase) * 25;
+            b = 18;
+          } else {
+            r = 139 + Math.sin(time * 0.001 + star.phase) * 35;
+            g = 92 + Math.sin(time * 0.0012 + star.phase) * 25;
+            b = 246;
+          }
+
+          ctx.beginPath();
+          ctx.arc(px, py, star.radius * twinkle, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${opacity * 0.85})`;
+          ctx.fill();
+
+          if (star.radius > 1.2) {
+            ctx.beginPath();
+            ctx.arc(px, py, star.radius * 4 * twinkle, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${opacity * 0.07})`;
+            ctx.fill();
+          }
+        });
+
+        if (mouseX > 0 && mouseY > 0) {
+          const trailLength = 60;
+          for (let i = 0; i < trailLength; i++) {
+            const progress = i / trailLength;
+            const alpha = 0.03 * (1 - progress);
+            const radius = 2 * (1 - progress) + 0.5;
+            const x = mouseX - (mouseX - mouseX) * progress;
+            const y = mouseY - (mouseY - mouseY) * progress;
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(139, 92, 246, ${alpha})`;
+            ctx.fill();
+          }
+        }
+
+        requestAnimationFrame(drawStars);
+      }
+
+      function initStars() {
+        resize();
+        createStars();
+        drawStars(0);
+      }
+
+      window.addEventListener('resize', () => {
+        resize();
+        createStars();
+      });
+
+      setTimeout(() => {
+        glow.style.transition = 'opacity 0.5s ease';
+      }, 100);
+
+      initStars();
+    })();
+
+    // ================================================
     // ОБРАБОТЧИКИ КЛАВИШ
     // ================================================
 
     document.addEventListener('keydown', function(e) {
-      // Ctrl+Alt+A — вход
       if (e.ctrlKey && e.altKey && e.key === 'a') {
         e.preventDefault();
         const modal = document.getElementById('login-modal');
@@ -1355,19 +1498,16 @@
         setTimeout(() => document.getElementById('admin-password').focus(), 100);
       }
 
-      // Ctrl+Alt+Q — выход
       if (e.ctrlKey && e.altKey && e.key === 'q') {
         e.preventDefault();
         if (isAdmin) logoutAdmin();
       }
 
-      // Escape — закрыть модалку
       if (e.key === 'Escape') {
         const modal = document.getElementById('login-modal');
         if (modal.classList.contains('active')) modal.classList.remove('active');
       }
 
-      // Enter — войти
       if (e.key === 'Enter') {
         const modal = document.getElementById('login-modal');
         if (modal.classList.contains('active')) loginAdmin();
@@ -1375,37 +1515,30 @@
     });
 
     // ================================================
-    // ЗВУКИ ПРИ НАВЕДЕНИИ
+    // ЗАПУСК
     // ================================================
 
     document.addEventListener('DOMContentLoaded', function() {
-      // Загружаем сохранённые данные
       loadChanges();
       updateSoundButton();
 
-      // Звук на кнопку звука
       document.getElementById('sound-toggle').addEventListener('click', toggleSound);
 
-      // Звук на соцсети
       document.querySelectorAll('.social-link').forEach(link => {
         link.addEventListener('mouseenter', () => playSound('hover'));
       });
 
-      // Звук на донат-ссылки
       document.querySelectorAll('.donate-link').forEach(link => {
         link.addEventListener('mouseenter', () => playSound('hover'));
       });
 
-      // Звук на кнопки в админке
       document.querySelectorAll('.admin-btn').forEach(btn => {
         btn.addEventListener('click', () => playSound('click'));
       });
 
-      // Проверяем статус стрима
       checkStreamStatus();
-      statusCheckInterval = setInterval(checkStreamStatus, 30000); // каждые 30 секунд
+      statusCheckInterval = setInterval(checkStreamStatus, 30000);
 
-      // 3D-эффект для карточек
       if (typeof VanillaTilt !== 'undefined') {
         VanillaTilt.init(document.querySelectorAll('.tilt-card'), {
           max: 6,
@@ -1420,7 +1553,6 @@
         });
       }
 
-      // Плавное появление
       document.querySelectorAll('.card').forEach((card, i) => {
         card.style.opacity = '0';
         card.style.transform = 'translateY(30px)';
